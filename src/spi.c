@@ -64,3 +64,29 @@ static void spi_free(mrb_state *mrb, void *p)
   
   mrb_free(mrb,p);
 }
+
+int spi_low_write(mrb_spi_stc *s,__u8 *b,int len,__u8 cscon)
+{
+  if(cscon)
+    write(s->cscon_unit,&zero,1); // must be high, except when sending
+  
+  int ret=write(s->unit,b,len);
+
+  if(cscon)
+    write(s->cscon_unit,&one,1); // must be high, except when sending
+
+  return ret;
+}
+
+int spi_low_read(mrb_spi_stc *s,__u8 *b,int len,__u8 cscon)
+{
+  if(cscon)
+    write(s->cscon_unit,&zero,1); // must be high, except when sending
+
+  int ret=read(s->unit,b,len);
+  
+  if(cscon)
+    write(s->cscon_unit,&one,1); // must be high, except when sending
+
+  return ret;
+}

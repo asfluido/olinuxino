@@ -20,6 +20,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
+#include <linux/types.h>
 #include "mruby/class.h"
 #include "mruby/data.h"
 #include "mruby/value.h"
