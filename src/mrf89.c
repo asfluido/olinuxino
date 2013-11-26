@@ -186,14 +186,16 @@ mrb_value mrb_mrf89_transmit(mrb_state *mrb,mrb_value self)
   write(s->spi->cscon_unit,&zero,1);
   write(s->spi->unit,b,2);
   write(s->spi->cscon_unit,&one,1);
+
+  int lr;
   
   while(1)
   {
     lseek(s->spi->irq_units[0],0,SEEK_SET);
-    read(s->spi->irq_units[0],b,1);
+    lr=read(s->spi->irq_units[0],b,1);
     if(b[0]=='1')
       break;
-    fprintf(stderr,"[%2.2x]",b[0]);
+    fprintf(stderr,"[%2.2x,%d]",b[0],lr);
     usleep(1000);
   }
 
