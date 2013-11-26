@@ -39,7 +39,6 @@ static struct mrb_data_type mrb_spi_type={"Spi",spi_free};
 
 static mrb_value mrb_spi_initialize(mrb_state *mrb,mrb_value self)
 {
-  mrb_int spi_no;
   mrb_spi_stc *s=(mrb_spi_stc *)mrb_malloc(mrb,sizeof(mrb_spi_stc));
   char bfr[256];
 
@@ -83,4 +82,16 @@ static void spi_free(mrb_state *mrb, void *p)
   close(s->irq_units[1]);
   
   mrb_free(mrb,p);
+}
+
+void mrb_dvb_spi_init(mrb_state* mrb)
+{
+  struct RClass *c=mrb_define_class(mrb,"Spi",mrb->object_class);
+  MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
+
+  mrb_define_method(mrb,c,"initialize",mrb_spi_initialize,MRB_ARGS_REQ(2));
+}
+
+void mrb_dvb_gem_final(mrb_state* mrb)
+{
 }

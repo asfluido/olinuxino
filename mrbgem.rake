@@ -1,4 +1,4 @@
-MRuby::Gem::Specification::new('dvb') do |spec|
+MRuby::Gem::Specification::new('spi') do |spec|
   spec.license='public domain'
   spec.author='Carlo E.Prelz'
  
