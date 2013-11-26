@@ -37,11 +37,11 @@ mrb_value mrb_spi_initialize(mrb_state *mrb,mrb_value self)
   write(s->cscon_unit,&one,1); // must be high, except when sending  
 
   sprintf(bfr,"/sys/devices/virtual/misc/sun4i-gpio/pin/%s",IRQ1_PIN);
-  s->irq_units[0]=open(bfr,O_WRONLY|O_SYNC);
+  s->irq_units[0]=open(bfr,O_RDWR|O_SYNC);
   if(s->irq_units[0]<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",mrb_str_new_cstr(mrb,bfr),mrb_str_new_cstr(mrb,strerror(errno)));
   sprintf(bfr,"/sys/devices/virtual/misc/sun4i-gpio/pin/%s",IRQ2_PIN);
-  s->irq_units[1]=open(bfr,O_WRONLY|O_SYNC);
+  s->irq_units[1]=open(bfr,O_RDWR|O_SYNC);
   if(s->irq_units[1]<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",mrb_str_new_cstr(mrb,bfr),mrb_str_new_cstr(mrb,strerror(errno)));
 
