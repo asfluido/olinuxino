@@ -30,7 +30,7 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
 
   mrb_define_method(mrb,c,"initialize",mrb_mrf89_initialize,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"set_para",mrb_mrf89_set_para,MRB_ARGS_REQ(2));
-  mrb_define_method(mrb,c,"set_channel",mrb_mrf89_set_para,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,c,"set_channel",mrb_mrf89_set_channel,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"transmit",mrb_mrf89_transmit,MRB_ARGS_REQ(1));
 }
 
