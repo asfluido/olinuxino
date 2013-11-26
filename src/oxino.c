@@ -18,8 +18,20 @@ extern mrb_value mrb_mrf89_set_para(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_set_channel(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_transmit(mrb_state *mrb,mrb_value self);
 
+static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
+{
+  __u32 msecs;
+  
+  mrb_get_args(mrb,"i",&msecs);
+
+  usleep(msecs*1000L);
+  return self;
+}
+
 void mrb_olinuxino_gem_init(mrb_state* mrb)
 {
+  mrb_define_method(mrb,mrb->object_class,"msleep",mrb_msleep,MRB_ARGS_REQ(1));
+  
   struct RClass *c=mrb_define_class(mrb,"Spi",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
 
