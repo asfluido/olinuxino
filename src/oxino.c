@@ -58,6 +58,8 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   c=mrb_define_class(mrb,"Mrf89",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
 
+  mrb_define_const(mrb,c,"N_CHANNELS",mrb_fixnum_value(CHANNEL_NUM));
+
   mrb_define_method(mrb,c,"initialize",mrb_mrf89_initialize,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"set_para",mrb_mrf89_set_para,MRB_ARGS_REQ(2));
   mrb_define_method(mrb,c,"set_channel",mrb_mrf89_set_channel,MRB_ARGS_REQ(1));

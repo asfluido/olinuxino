@@ -29,4 +29,6 @@
 
 extern unsigned char one,zero;
 
+#include "mrf89.h"
+
 #endif
