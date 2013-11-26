@@ -191,8 +191,8 @@ mrb_value mrb_mrf89_transmit(mrb_state *mrb,mrb_value self)
   
   while(1)
   {
-    lr=lseek(s->spi->irq_units[0],0,SEEK_SET);
-    fprintf(stderr,"(%d,%d,%s)",lr,s->spi->irq_units[0],strerror(errno));
+//    lr=lseek(s->spi->irq_units[0],0,SEEK_SET);
+//    fprintf(stderr,"(%d,%d,%s)",lr,s->spi->irq_units[0],strerror(errno));
     lr=read(s->spi->irq_units[0],b,1);
     fprintf(stderr,"[%2.2x,%d,%d,%s]",b[0],lr,s->spi->irq_units[0],strerror(errno));
     if(b[0]=='1')
