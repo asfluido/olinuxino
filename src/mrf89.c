@@ -206,6 +206,22 @@ mrb_value mrb_mrf89_transmit(mrb_state *mrb,mrb_value self)
   return self;
 }
 
+mrb_value mrb_mrf89_read(mrb_state *mrb,mrb_value self)
+{
+  mrb_mrf89_stc *s=DATA_PTR(self);
+  int nch;
+  mrb_value cscon;
+
+  mrb_get_args(mrb,"iS",&nch,&cscon);
+
+  __u8 b[nch];
+  int ret=spi_low_read(s->spi,b,nch,mrb_bool(cscon) ? 1 : 0);
+  if(ret!=nch)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: read %S instead of %S! (%S)",mrb_str_new_cstr(mrb,__func__),
+	       mrb_fixnum_value(ret),mrb_fixnum_value(nch),mrb_str_new_cstr(mrb,strerror(errno)));
+
+  return mrb_str_new(mrb,(char *)b,nch);
+}
 
 static void mrf89_free(mrb_state *mrb, void *p)
 {
