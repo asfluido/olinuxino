@@ -21,4 +21,7 @@ typedef struct mrb_spi
 #define IRQ1_PIN "pg4"
 #define IRQ2_PIN "pb17"
 
+static unsigned char one='1';
+static unsigned char zero='0';
+
 #endif

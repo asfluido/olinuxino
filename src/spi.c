@@ -8,13 +8,9 @@
  *
  * Talk with a SPI bus
  */
- 
 
 #include "oxino.h"
 #include "spi.h"
-
-static unsigned char one='1';
-static unsigned char zero='0';
 
 static void spi_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_spi_type={"Spi",spi_free};
