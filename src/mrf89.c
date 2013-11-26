@@ -30,7 +30,7 @@ static mrb_value mrb_mrf89_initialize(mrb_state *mrb,mrb_value self)
 
   mrb_get_args(mrb,"o",&v);
   s->spi=DATA_PTR(v);
-  fputs(stderr,"Opened mrf89 on spi %d%d\n",s->spi->spi_no[0],s->spi->spi_no[1]);
+  fprintf(stderr,"Opened mrf89 on spi %d%d\n",s->spi->spi_no[0],s->spi->spi_no[1]);
 
   DATA_TYPE(self)=&mrb_mrf89_type;
   DATA_PTR(self)=s;
