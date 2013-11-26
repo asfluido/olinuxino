@@ -25,4 +25,6 @@
 #include "mruby/value.h"
 #include "mruby/array.h"
 
+extern unsigned char one,zero;
+
 #endif

@@ -12,6 +12,10 @@
 #include "oxino.h"
 #include "spi.h"
 
+unsigned char one='1';
+unsigned char zero='0';
+
+
 static void spi_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_spi_type={"Spi",spi_free};
 
