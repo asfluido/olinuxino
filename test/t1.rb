@@ -10,11 +10,11 @@ nch=5
 
 loop do
   nch.times do |ch|
-    spi.set_channel(ch)
+    m.set_channel(ch)
     cnt+=1
     msg=sprintf(sendout,ch,cnt)
     STDERR.printf("\r%s",msg)
-    spi.transmit(msg)
+    m.transmit(msg)
     sleep(0.1)
   end
 end
