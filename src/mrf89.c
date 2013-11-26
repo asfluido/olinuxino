@@ -223,6 +223,43 @@ mrb_value mrb_mrf89_read(mrb_state *mrb,mrb_value self)
   return mrb_str_new(mrb,(char *)b,nch);
 }
 
+mrb_value mrb_mrf89_req_para(mrb_state *mrb,mrb_value self)
+{
+  mrb_mrf89_stc *s=DATA_PTR(self);
+  int paraid;
+
+  mrb_get_args(mrb,"i",&paraid);
+
+  if(paraid<0 || paraid>=N_REG)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad para id! (%S)",mrb_str_new_cstr(mrb,__func__),
+	       mrb_fixnum_value(paraid));
+  
+  __u8 c=(paraid<<1)|0x40,c2;
+  write(s->spi->cscon_unit,&zero,1);
+  write(s->spi->unit,&c,1);
+  read(s->spi->unit,&c2,1);
+  write(s->spi->cscon_unit,&one,1);
+  
+  return mrb_fixnum_value(c2);
+}
+
+mrb_value mrb_mrf89_get_irqs(mrb_state *mrb,mrb_value self)
+{
+  mrb_mrf89_stc *s=DATA_PTR(self);
+  mrb_value to_ret=mrb_ary_new(mrb);
+  unsigned char c;
+  int i;
+  
+  for(i=0;i<2;i++)
+  {
+    lseek(s->spi->irq_units[i],0,SEEK_SET);
+    read(s->spi->irq_units[i],&c,1);
+    mrb_ary_push(mrb,to_ret,mrb_fixnum_value(c));
+  }
+  
+  return to_ret;
+}
+  
 static void mrf89_free(mrb_state *mrb, void *p)
 {
 //  mrb_mrf89_stc *s=(mrb_mrf89_stc *)p;
