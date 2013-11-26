@@ -7,6 +7,7 @@ m.prepare_for_transmit
 sendout='The quick brown fox %2d %8d'
 
 nch=5
+cnt=0
 
 loop do
   nch.times do |ch|
