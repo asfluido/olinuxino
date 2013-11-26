@@ -9,30 +9,12 @@
  * Talk with a SPI bus
  */
  
-#define __EXPORTED_HEADERS__
 
-#include <mruby.h>
-#include <stdio.h>
-#include <string.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
-#include "mruby/class.h"
-#include "mruby/data.h"
-#include "mruby/value.h"
-#include "mruby/array.h"
-
-#define CSCON_PIN "pb18"
-#define IRQ1_PIN "pg4"
-#define IRQ2_PIN "pb17"
+#include "oxino.h"
+#include "spi.h"
 
 static unsigned char one='1';
 static unsigned char zero='0';
-
-typedef struct mrb_spi
-{
-  int spi_no[2],unit,cscon_unit,irq_units[2];
-} mrb_spi_stc;
 
 static void spi_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_spi_type={"Spi",spi_free};
