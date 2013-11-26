@@ -30,7 +30,7 @@ static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
 
 static mrb_value mrb_loggo(mrb_state *mrb,mrb_value self)
 {
-  char *s1,*s2;
+  char s1[256],*s2;
   int len;
   time_t t=time(NULL);
   struct tm *tms=localtime(&t);
@@ -39,8 +39,6 @@ static mrb_value mrb_loggo(mrb_state *mrb,mrb_value self)
   write(2,s1,len);  
 
   mrb_get_args(mrb,"s",&s2,&len);
-  fprintf(stderr,"\n\n\n%5s\n\n",s2);
-  
   write(2,s2,len);  
   write(2,"\n",1);  
   
