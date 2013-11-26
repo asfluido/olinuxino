@@ -10,7 +10,7 @@ minv=Array::new(Mrf89::N_CHANNELS,255)
 loop do
   Mrf89::N_CHANNELS.times do |ch|
     m.set_channel(ch)
-    usleep(20)
+    msleep(20)
     
     10.times do
       iv=m.req_para(0x14)
