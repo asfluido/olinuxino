@@ -23,7 +23,7 @@ typedef struct mrb_mrf89
 static void mrf89_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_mrf89_type={"Mrf89",mrf89_free};
 
-static mrb_value mrb_mrf89_initialize(mrb_state *mrb,mrb_value self)
+mrb_value mrb_mrf89_initialize(mrb_state *mrb,mrb_value self)
 {
   mrb_mrf89_stc *s=(mrb_mrf89_stc *)mrb_malloc(mrb,sizeof(mrb_mrf89_stc));
   mrb_value v;
@@ -43,18 +43,3 @@ static void mrf89_free(mrb_state *mrb, void *p)
   
   mrb_free(mrb,p);
 }
-
-void mrb_mrf89_gem_init(mrb_state* mrb)
-{
-  struct RClass *c=mrb_define_class(mrb,"Mrf89",mrb->object_class);
-  MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
-
-  mrb_define_method(mrb,c,"initialize",mrb_mrf89_initialize,MRB_ARGS_REQ(1));
-}
-
-void mrb_mrf89_gem_final(mrb_state* mrb)
-{
-}
-
-
-  

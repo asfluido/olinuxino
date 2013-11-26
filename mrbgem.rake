@@ -1,4 +1,4 @@
-MRuby::Gem::Specification::new('spi') do |spec|
+MRuby::Gem::Specification::new('olinuxino') do |spec|
   spec.license='public domain'
   spec.author='Carlo E.Prelz'
  
@@ -22,7 +22,3 @@ MRuby::Gem::Specification::new('spi') do |spec|
   # spec.test_args = {'tmp_dir' => Dir::tmpdir}
 end
 
-MRuby::Gem::Specification::new('mrf89') do |spec|
-  spec.license='public domain'
-  spec.author='Carlo E.Prelz'
-end
