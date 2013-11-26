@@ -14,7 +14,7 @@ loop do
     m.set_channel(ch)
     cnt+=1
     msg=sprintf(sendout,ch,cnt)
-    STDERR.printf("\r%s",msg)
+    printf("\r%s",msg)
     m.transmit(msg)
     sleep(0.1)
   end
