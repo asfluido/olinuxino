@@ -16,7 +16,7 @@ loop do
     msg=sprintf(sendout,ch,cnt)
     printf("\r%s",msg)
     m.transmit(msg)
-    sleep(0.1)
+    msleep(10)
   end
 end
 
