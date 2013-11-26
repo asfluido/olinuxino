@@ -21,3 +21,8 @@ MRuby::Gem::Specification::new('spi') do |spec|
   # Values accessible as TEST_ARGS inside test scripts
   # spec.test_args = {'tmp_dir' => Dir::tmpdir}
 end
+
+MRuby::Gem::Specification::new('mrf89') do |spec|
+  spec.license='public domain'
+  spec.author='Carlo E.Prelz'
+end

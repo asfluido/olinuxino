@@ -39,7 +39,7 @@ static mrb_value mrb_mrf89_initialize(mrb_state *mrb,mrb_value self)
 
 static void mrf89_free(mrb_state *mrb, void *p)
 {
-  mrb_mrf89_stc *s=(mrb_mrf89_stc *)p;
+//  mrb_mrf89_stc *s=(mrb_mrf89_stc *)p;
   
   mrb_free(mrb,p);
 }
