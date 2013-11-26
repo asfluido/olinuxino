@@ -14,7 +14,7 @@ loop do
     m.set_channel(ch)
     cnt+=1
     msg=sprintf(sendout,ch,cnt)
-    printf("\r%s",msg)
+    loggo(msg)
     m.transmit(msg)
     msleep(10)
   end
