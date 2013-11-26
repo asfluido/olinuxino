@@ -36,10 +36,10 @@ static mrb_value mrb_loggo(mrb_state *mrb,mrb_value self)
   struct tm *tms=localtime(&t);
 
   len=strftime(s,256,"[%y%m%d.%H%M%S]: ",tms);
-  write(2,tms,len);  
+  write(2,s,len);  
 
   mrb_get_args(mrb,"s",&s,&len);
-  write(2,tms,len);  
+  write(2,s,len);  
   write(2,"\n",1);  
   
   return self;
