@@ -28,9 +28,27 @@ static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
   return self;
 }
 
+static mrb_value mrb_loggo(mrb_state *mrb,mrb_value self)
+{
+  char *s;
+  int len;
+  time_t t=time(NULL);
+  struct tm *tms=localtime(&t);
+
+  len=strftime(s,256,"[%y%m%d.%H%M%S]: ",tms);
+  write(2,tms,len);  
+
+  mrb_get_args(mrb,"s",&s,&len);
+  write(2,tms,len);  
+  write(2,"\n",1);  
+  
+  return self;
+}
+
 void mrb_olinuxino_gem_init(mrb_state* mrb)
 {
   mrb_define_method(mrb,mrb->object_class,"msleep",mrb_msleep,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,mrb->object_class,"loggo",mrb_loggo,MRB_ARGS_REQ(1));
   
   struct RClass *c=mrb_define_class(mrb,"Spi",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
