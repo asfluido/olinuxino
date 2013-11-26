@@ -193,8 +193,8 @@ mrb_value mrb_mrf89_transmit(mrb_state *mrb,mrb_value self)
     read(s->spi->irq_units[0],b,1);
     if(b[0]=='1')
       break;
-    fprintf(stderr,"[%2.2x,%s]",b[0],strerror(errno));
-    usleep(1000);
+    fprintf(stderr,"[%2.2x]",b[0]);
+    usleep(5000);
   }
 
   b[0]=GCONREG<<1;
