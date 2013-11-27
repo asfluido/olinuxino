@@ -6,7 +6,7 @@ m.prepare_for_receive
 
 def hexp(b)
   s=''
-  a=b.chars.to_a
+  a=b.bytes.to_a
   a.each do |c|
     s+=(/[[:graph:]]/.match(c) ? c : '.')
   end
