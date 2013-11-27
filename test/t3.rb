@@ -8,8 +8,12 @@ def hexp(b)
   s=''
   a=b.bytes.to_a
   a.each do |c|
-    c=c.chr
-    s+=(/[A-Za-z0-9]/.match(c) ? c : '.')
+    if(c==0)
+      s+='.'
+    else
+      c=c.chr
+      s+=(/[A-Za-z0-9]/.match(c)) ? c : '.'
+    end
   end
   s+='| '
   a.each do |c|    
