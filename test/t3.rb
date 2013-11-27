@@ -19,7 +19,7 @@ def hexp(b)
   end
   s+='| '
   a.each do |c|    
-    s+=sprintf('%2.2x ',c.ord)
+    s+=sprintf('%2.2x ',c)
   end
   loggo(s)
 end
