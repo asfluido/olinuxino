@@ -8,7 +8,8 @@ maxv=Array::new(Mrf89::N_CHANNELS,0)
 minv=Array::new(Mrf89::N_CHANNELS,255)
 
 loop do
-  Mrf89::N_CHANNELS.times do |ch|
+  #  Mrf89::N_CHANNELS.times do |ch|
+  5.times do |ch|
     m.set_channel(ch)
     msleep(20)
     
@@ -32,7 +33,7 @@ loop do
       i=m.get_irqs
       unless(i[0]==48 && i[1]==48)
         r=m.lread(8,false)
-        printf("[%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x] [%c%c]",*(r.bytes.to_a),i[0].chr,i[1].chr)
+        loggo(sprintf("[%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x] [%c%c]",*(r.bytes.to_a),i[0].chr,i[1].chr))
       end
     end
   end
