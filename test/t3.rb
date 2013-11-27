@@ -4,7 +4,7 @@ spi=Spi::new(2,0)
 m=Mrf89::new(spi)
 m.prepare_for_receive
 
-RE=HsRegexp::new('[A-Za-z0-9]')
+RE=/[[:print:]]/
 
 def hexp(b)
   s=''
