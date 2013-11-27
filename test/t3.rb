@@ -9,7 +9,7 @@ def hexp(b)
   a=b.bytes.to_a
   a.each do |c|
     c=c.chr
-    s+=(/[[:graph:]]/.match(c) ? c : '.')
+    s+=(/[A-Za-z0-9]/.match(c) ? c : '.')
   end
   s+='| '
   a.each do |c|    
