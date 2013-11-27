@@ -4,6 +4,8 @@ spi=Spi::new(2,0)
 m=Mrf89::new(spi)
 m.prepare_for_receive
 
+RE=HsRegexp::new('[A-Za-z0-9]')
+
 def hexp(b)
   s=''
   a=b.bytes.to_a
@@ -12,7 +14,7 @@ def hexp(b)
       s+='.'
     else
       c=c.chr
-      s+=(/[A-Za-z0-9]/.match(c)) ? c : '.'
+      s+=(RE.match(c)) ? c : '.'
     end
   end
   s+='| '
