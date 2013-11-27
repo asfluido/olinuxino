@@ -24,7 +24,7 @@ def hexp(b)
   loggo(s)
 end
 
-m.set_channel(4)
+m.set_channel(3)
 
 loop do
   hexp(m.receive()) #if(iv>100)
