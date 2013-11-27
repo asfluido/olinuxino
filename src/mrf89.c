@@ -16,6 +16,7 @@
 #define RESET_SLEEP1 100 
 #define RESET_SLEEP2 5000
 #define TSHOP 350
+#define TSTWF 500
 
 typedef struct mrb_mrf89
 {
@@ -204,6 +205,58 @@ mrb_value mrb_mrf89_transmit(mrb_state *mrb,mrb_value self)
   write(s->spi->cscon_unit,&one,1);
   
   return self;
+}
+
+mrb_value mrb_mrf89_receive(mrb_state *mrb,mrb_value self)
+{
+  mrb_mrf89_stc *s=DATA_PTR(self);
+    __u8 b[64];
+
+  write(s->spi->irq_units[0],&zero,1);
+  write(s->spi->irq_units[1],&zero,1);
+
+  b[0]=GCONREG<<1;
+  b[1]=CHIPMODE_STBYMODE|FREQ_BAND|VCO_TRIM_11;
+  b[2]=FTXRXIREG<<1;
+  b[3]=0x80;
+  b[4]=FTPRIREG<<1;
+  b[5]=1;
+  b[6]=GCONREG<<1;
+  b[7]=CHIPMODE_RX|FREQ_BAND|VCO_TRIM_11;
+  
+  write(s->spi->cscon_unit,&zero,1);
+  write(s->spi->unit,b,8);
+  write(s->spi->cscon_unit,&one,1);
+  
+  usleep(TSTWF);
+
+  b[0]=FTPRIREG<<1;
+  b[1]=0xcf;
+  
+  write(s->spi->cscon_unit,&zero,1);
+  write(s->spi->unit,b,2);
+  write(s->spi->cscon_unit,&one,1);
+
+  while(1)
+  {
+    lseek(s->spi->irq_units[0],0,SEEK_SET);
+    read(s->spi->irq_units[0],b,1);
+    lseek(s->spi->irq_units[1],0,SEEK_SET);
+    read(s->spi->irq_units[1],b+1,1);
+    if(b[1]=='1')
+      break;
+//    fprintf(stderr,"[%2.2x %2.2x]",b[0],b[1]);
+    usleep(1000);
+  }
+
+  int i;
+
+  for(i=0;i<64;i++)
+    read(s->spi->unit,b+i,1);
+  
+//  low_read(s,b,64,0);
+
+  return mrb_str_new(mrb,(char *)b,64);
 }
 
 mrb_value mrb_mrf89_read(mrb_state *mrb,mrb_value self)

@@ -17,6 +17,7 @@ extern mrb_value mrb_mrf89_initialize(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_set_para(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_set_channel(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_transmit(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_mrf89_receive(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_read(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_req_para(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_get_irqs(mrb_state *mrb,mrb_value self);
@@ -67,6 +68,7 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   mrb_define_method(mrb,c,"set_para",mrb_mrf89_set_para,MRB_ARGS_REQ(2));
   mrb_define_method(mrb,c,"set_channel",mrb_mrf89_set_channel,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"transmit",mrb_mrf89_transmit,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,c,"receive",mrb_mrf89_receive,MRB_ARGS_NONE());
   mrb_define_method(mrb,c,"read",mrb_mrf89_read,MRB_ARGS_REQ(2));
   mrb_define_method(mrb,c,"req_para",mrb_mrf89_req_para,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"get_irqs",mrb_mrf89_get_irqs,MRB_ARGS_NONE());
