@@ -101,7 +101,8 @@ Here is what you should do.
 	 uart_debug_tx = port:PG03<4><1><default><default>
 	 uart_debug_rx = port:PG04<4><1><default><default>
 	 ```
-	 by prepending a `;` to each line (pin PG04 is used by SPI).
+
+	by prepending a `;` to each line (pin PG04 is used by SPI).
    1. Change line
 	 ```
 	 twi2_used = 1
