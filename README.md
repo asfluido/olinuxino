@@ -53,6 +53,12 @@ do my compilations onboard. You find
 a PDF that describes how you can end up with a bootable SD-card for
 your board, that includes your self-compiled kernel. 
 
+I talk to my boards via Ethernet, using a USB-to-USB cable from my
+main PC. All remote operations are performed from a SSH-connected
+session. I make sure my main machine offers IP masquerading. This is
+not the place to describe how I do that. The important thing is that,
+once logged in to the A13, I have full internet connectivity.
+
 #### Talking to **SPI**
 
 First thing, you will need to include the appropriate support for SPI
@@ -84,9 +90,9 @@ Here is what you should do.
    directory, and, if you are as paranoid as me, do a `make clean &&
    make`. As a result, you will have an executable called `fexc`, and
    two links to it, called `fex2bin` and `bin2fex`
-1. Pick your preferred `script.bin`, copy it to that directory, and
-   run:
-		./bin2fex script.bin script.fex	
+1. Pick your preferred `script.bin`, copy it to that directory, call
+   it `oldscript.bin` and run:
+	   `./bin2fex oldscript.bin > oldscript.fex	`
 1. Edit the resulting `script.fex` file:
    1. Comment out this block:
 	 ```
@@ -130,11 +136,12 @@ Here is what you should do.
 	 full_duplex = 0
 	 manual_cs = 0
 	 ```
-	 All this should make sure that the port connected to SPI bus#2 of
-	 your A13 (the one wired to the UEXT socket) is seen at boot, and
-	 managed, within the kernel, by `spidev` (see
-	 [here](https://www.kernel.org/doc/Documentation/spi/spidev) to
-	 learn more about spidev).
+
+	All this should make sure that the port connected to SPI bus#2 of
+	your A13 (the one wired to the UEXT socket) is seen at boot, and
+	managed, within the kernel, by `spidev` (see
+	[here](https://www.kernel.org/doc/Documentation/spi/spidev) to
+	learn more about spidev).
   1. Make sure you can access the GPIO pins you need to access, by
      adding this other block:
 	 ```
@@ -147,15 +154,15 @@ Here is what you should do.
 	 gpio_pin_4 = port:PB18<1><default><default><default>
 	 ```
 	 (you can see all IO ports of the A13 [here](http://linux-sunxi.org/A13/PIO))
+1. You should then create your own `script.bin` file . 
+   run:
+   `./fex2bin oldscript.fex > script.bin`
+   You should be sure that you put **this** file into your SD card.
+
+With the above kernel and `script.bin`, you should be able to see file
+`spidev2.0` in your `/dev/` tree. 
 
 #### How to compile Mruby
-
-
-I talk to my boards via Ethernet, using a USB-to-USB cable from my
-main PC. All remote operations are performed from a SSH-connected
-session. I make sure my main machine offers IP masquerading. This is
-not the place to describe how I do that. The important thing is that,
-once logged in to the A13, I have full internet connectivity.
 
 Log in to your board. Make sure you have the normal compilation
 environment. *Make sure you install a version of Ruby!* It is needed
