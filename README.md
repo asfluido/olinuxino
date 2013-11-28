@@ -1,6 +1,6 @@
 # olinuxino
 
-## A mruby gem to dabble with an olinuxino A13 board
+### A mruby gem to dabble with an olinuxino A13 board
 
 This repository contains a little bit of software targeted for the 
 [Olimex Olinuxino-A13](https://www.olimex.com/Products/OLinuXino/A13/A13-OLinuXino)
@@ -15,11 +15,11 @@ targeted to small harware and embedded application.
 
 Currently, the code focuses on:
 
-* talking to the *SPI* interface
+* talking to the **SPI** serial interface
 * talking to an
   [Olimex MOD-MRF89-868](https://www.olimex.com/Products/Modules/RF/MOD-MRF89-868/)
-  board via the *UEXT* interface of the A13 board.
+  board via the **UEXT** interface of the A13 board.
 
-
+The **MRF89** board is a radio receiver/transmitter board for 
 
 
