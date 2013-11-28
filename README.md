@@ -102,17 +102,19 @@ Here is what you should do.
 		uart_debug_rx = port:PG04<4><1><default><default>
 
 	by prepending a `;` to each line (pin PG04 is used by SPI).
+
 	1. Change line
 
 			twi2_used = 1
 
-	to
+		to
 
 			twi2_used = 0
 
-	(pins PB17 and PB18 are used by SPI)
+	    (pins PB17 and PB18 are used by SPI).
+	
 	1. Search the block beginning with `[spi2_para]`. Change it so
-	that it reads: 
+	    that it reads: 
 
 			[spi2_para]
 			spi_used = 1
@@ -137,14 +139,14 @@ Here is what you should do.
 			manual_cs = 0
 			
 
-	All this should make sure that the port connected to SPI bus#2 of
-	your A13 (the one wired to the UEXT socket) is seen at boot, and
-	managed, within the kernel, by `spidev` (see
-	[here](https://www.kernel.org/doc/Documentation/spi/spidev) to
-	learn more about spidev).
+	    All this should make sure that the port connected to SPI bus#2 of
+		your A13 (the one wired to the UEXT socket) is seen at boot, and
+		managed, within the kernel, by `spidev` (see
+		[here](https://www.kernel.org/doc/Documentation/spi/spidev) to
+		learn more about spidev).
 
 	1. Make sure you can access the GPIO pins you need to access, by
-	 adding this other block: 
+	    adding this other block: 
 
 			[gpio_para]
 			gpio_used = 1
@@ -154,8 +156,8 @@ Here is what you should do.
 			gpio_pin_3 = port:PB17<0><default><default><default>
 			gpio_pin_4 = port:PB18<1><default><default><default>
 
-	(you can see all IO ports of the A13
-    [here](http://linux-sunxi.org/A13/PIO))
+	    (you can see all IO ports of the A13
+        [here](http://linux-sunxi.org/A13/PIO))
 	
 1. You should then create your own `script.bin` file . 
    run:
