@@ -32,7 +32,7 @@ loop do
       loggo(s)
       i=m.get_irqs
       unless(i[0]==48 && i[1]==48)
-        r=m.lread(8,false)
+        r=m.read(8,false)
         loggo(sprintf("[%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x] [%c%c]",*(r.bytes.to_a),i[0].chr,i[1].chr))
       end
     end
