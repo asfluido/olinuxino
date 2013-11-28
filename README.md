@@ -113,19 +113,21 @@ Here is what you should do.
 	 (pins PB17 and PB18 are used by SPI)
    1. Search the block beginning with `[spi2_para]`. Change it so that
 	 it reads:
-	 ```
-	 [spi2_para]
-	 spi_used = 1
-	 spi_cs_bitmap = 1
-	 spi_cs0 = port:PE00<4><default><default><default>
-	 spi_sclk = port:PE01<4><default><default><default>
-	 spi_mosi = port:PE02<4><default><default><default>
-	 spi_miso = port:PE03<4><default><default><default>
-	 ```
-  1. Add these two blocks:
-	 ```
-	 [spi_devices]
-	 spi_dev_num = 1
+
+	```
+	[spi2_para]
+	spi_used = 1
+	spi_cs_bitmap = 1
+	spi_cs0 = port:PE00<4><default><default><default>
+	spi_sclk = port:PE01<4><default><default><default>
+	spi_mosi = port:PE02<4><default><default><default>
+	spi_miso = port:PE03<4><default><default><default>
+	```
+
+   1. Add these two blocks:
+	  ```
+	  [spi_devices]
+	  spi_dev_num = 1
 	 
 	 [spi_board0]
 	 modalias = "spidev"
