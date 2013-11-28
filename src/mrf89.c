@@ -265,7 +265,7 @@ mrb_value mrb_mrf89_read(mrb_state *mrb,mrb_value self)
   int nch;
   mrb_value cscon;
 
-  mrb_get_args(mrb,"iS",&nch,&cscon);
+  mrb_get_args(mrb,"io",&nch,&cscon);
 
   __u8 b[nch];
   int ret=spi_low_read(s->spi,b,nch,mrb_bool(cscon) ? 1 : 0);
