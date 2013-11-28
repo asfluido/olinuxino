@@ -1,9 +1,5 @@
 #!/usr/src/mruby/bin/mruby
 
-spi=Spi::new(2,0)
-m=Mrf89::new(spi)
-m.prepare_for_receive
-
 RE=/[[:print:]]/
 
 def hexp(b)
@@ -24,9 +20,16 @@ def hexp(b)
   loggo(s)
 end
 
-m.set_channel(3)
+raise "Usage: #{$0} chn" unless(ARGV.length==1)
+ch=ARGV[0].to_i
+
+spi=Spi::new(2,0)
+m=Mrf89::new(spi)
+m.prepare_for_receive
+
+m.set_channel(ch)
 
 loop do
-  hexp(m.receive()) #if(iv>100)
+  hexp(m.receive())
 end
 
