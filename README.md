@@ -95,75 +95,78 @@ Here is what you should do.
 	   `./bin2fex oldscript.bin > oldscript.fex	`
 1. Edit the resulting `script.fex` file:
    1. Comment out this block:
-	 ```
-	 [uart_para]
-	 uart_debug_port = 1
-	 uart_debug_tx = port:PG03<4><1><default><default>
-	 uart_debug_rx = port:PG04<4><1><default><default>
-	 ```
+
+		[uart_para]
+		uart_debug_port = 1
+		uart_debug_tx = port:PG03<4><1><default><default>
+		uart_debug_rx = port:PG04<4><1><default><default>
 
 	by prepending a `;` to each line (pin PG04 is used by SPI).
-   1. Change line
-	 ```
-	 twi2_used = 1
-	 ```
-	 to
-	 ```
-	 twi2_used = 0
-	 ```
-	 (pins PB17 and PB18 are used by SPI)
-   1. Search the block beginning with `[spi2_para]`. Change it so that
-	 it reads:
+	1. Change line
 
-	```
-	[spi2_para]
-	spi_used = 1
-	spi_cs_bitmap = 1
-	spi_cs0 = port:PE00<4><default><default><default>
-	spi_sclk = port:PE01<4><default><default><default>
-	spi_mosi = port:PE02<4><default><default><default>
-	spi_miso = port:PE03<4><default><default><default>
-	```
+			twi2_used = 1
 
-   1. Add these two blocks:
-	  ```
-	  [spi_devices]
-	  spi_dev_num = 1
-	 
-	 [spi_board0]
-	 modalias = "spidev"
-	 max_speed_hz = 1000000
-	 bus_num = 2
-	 chip_select = 0
-	 mode = 0
-	 full_duplex = 0
-	 manual_cs = 0
-	 ```
+	to
+
+			twi2_used = 0
+
+	(pins PB17 and PB18 are used by SPI)
+	1. Search the block beginning with `[spi2_para]`. Change it so
+	that it reads: 
+
+			[spi2_para]
+			spi_used = 1
+			spi_cs_bitmap = 1
+			spi_cs0 = port:PE00<4><default><default><default>
+			spi_sclk = port:PE01<4><default><default><default>
+			spi_mosi = port:PE02<4><default><default><default>
+			spi_miso = port:PE03<4><default><default><default>
+
+	1. Add these two blocks:
+
+			[spi_devices]
+			spi_dev_num = 1
+
+			[spi_board0]
+			modalias = "spidev"
+			max_speed_hz = 1000000
+			bus_num = 2
+			chip_select = 0
+			mode = 0
+			full_duplex = 0
+			manual_cs = 0
+			
 
 	All this should make sure that the port connected to SPI bus#2 of
 	your A13 (the one wired to the UEXT socket) is seen at boot, and
 	managed, within the kernel, by `spidev` (see
 	[here](https://www.kernel.org/doc/Documentation/spi/spidev) to
 	learn more about spidev).
-  1. Make sure you can access the GPIO pins you need to access, by
-     adding this other block:
-	 ```
-	 [gpio_para]
-	 gpio_used = 1
-	 gpio_num = 4
-	 gpio_pin_1 = port:PG03<1><default><default><default>
-	 gpio_pin_2 = port:PG04<0><default><default><default>
-	 gpio_pin_3 = port:PB17<0><default><default><default>
-	 gpio_pin_4 = port:PB18<1><default><default><default>
-	 ```
-	 (you can see all IO ports of the A13 [here](http://linux-sunxi.org/A13/PIO))
+
+	1. Make sure you can access the GPIO pins you need to access, by
+	 adding this other block: 
+
+			[gpio_para]
+			gpio_used = 1
+			gpio_num = 4
+			gpio_pin_1 = port:PG03<1><default><default><default>
+			gpio_pin_2 = port:PG04<0><default><default><default>
+			gpio_pin_3 = port:PB17<0><default><default><default>
+			gpio_pin_4 = port:PB18<1><default><default><default>
+
+	(you can see all IO ports of the A13
+    [here](http://linux-sunxi.org/A13/PIO))
+	
 1. You should then create your own `script.bin` file . 
    run:
-   `./fex2bin oldscript.fex > script.bin`
-   You should be sure that you put **this** file into your SD card.
+
+		./fex2bin oldscript.fex > script.bin`
+	   
+   You should make sure that you put **this** file into your SD card.
 
 With the above kernel and `script.bin`, you should be able to see file
-`spidev2.0` in your `/dev/` tree. 
+`spidev2.0` in your `/dev/` tree. This means that the SPI port is
+recognized.
 
 #### How to compile Mruby
 
