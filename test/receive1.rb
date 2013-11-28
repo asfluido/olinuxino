@@ -26,7 +26,7 @@ loop do
       s=sprintf("Ch%2d: %3d ->",ch,iv)
       maxv.each_with_index do |v,ix|
         s+=" |" if((ix%8)==0)
-        s+=sprintf(" %3d",v)
+        s+=sprintf(" %2.2x",v)
       end
       loggo(s)
       i=m.get_irqs
