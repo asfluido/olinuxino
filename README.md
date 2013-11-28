@@ -193,3 +193,26 @@ are included into your version of the mruby executable.
 
 It is then sufficient to run `make`, and you will be able to run my
 test programs.
+
+#### Testing my code
+
+In order to test my code you need to have two boards. The first one
+will be transmitting, the second one will be receiving.
+
+Say that you have your `mruby` on `/usr/src/mruby`. Start the
+transmitter by running:
+
+	/usr/src/mruby/bin/mruby /usr/src/mruby/build/olinuxino/test/transmit.rb 1 2 3 4 5 6 7 8
+
+The digits represent the channels that will be transmitted on. 32
+channels are available. As soon as the program is started, it will
+start sending a test message to each of the channels that you specify
+on the command line, endlessly cycling.
+
+On the second board, start the receiver by running:
+
+	/usr/src/mruby/bin/mruby /usr/src/mruby/build/olinuxino/test/receive2.rb 4
+
+Whenever a message is received on channel 4, it will be printed on
+your screen.
+
