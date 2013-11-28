@@ -94,14 +94,15 @@ Here is what you should do.
    it `oldscript.bin` and run:
 	   `./bin2fex oldscript.bin > oldscript.fex	`
 1. Edit the resulting `script.fex` file:
-   1. Comment out this block:
 
-		[uart_para]
-		uart_debug_port = 1
-		uart_debug_tx = port:PG03<4><1><default><default>
-		uart_debug_rx = port:PG04<4><1><default><default>
+	1. Comment out this block:
 
-	by prepending a `;` to each line (pin PG04 is used by SPI).
+			[uart_para]
+			uart_debug_port = 1
+			uart_debug_tx = port:PG03<4><1><default><default>
+			uart_debug_rx = port:PG04<4><1><default><default>
+	
+		by prepending a `;` to each line (pin PG04 is used by SPI).
 
 	1. Change line
 
