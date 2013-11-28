@@ -41,18 +41,115 @@ the desire to learn a bit about Mruby. I thus decided to port the old
 code (which I had written in Ruby/C) to Mruby, and to publish it on
 Github, in the hope that it may be useful to others.
 
-**This code may not be exactly what you need. You are free to contact
-  [me](mailto:ghub@fluido.as) if you are facing similar problems, but
-  please remember that I do not have loads of experience on this.**
-
 ### Some pointers
 
-#### How to compile Mruby
+#### Debian
 
 My way is to run Debian on my boards. I use Debian since it was
 created (I am *that* old), and I am at home there. Of course, the A13
 is not very quick in compiling, but I found it much preferrable to
-do my compilations onboard.
+do my compilations onboard. You find
+[here](https://github.com/OLIMEX/OLINUXINO/blob/master/SOFTWARE/A13/olinuxino-debian.pdf)
+a PDF that describes how you can end up with a bootable SD-card for
+your board, that includes your self-compiled kernel. 
+
+#### Talking to **SPI**
+
+First thing, you will need to include the appropriate support for SPI
+in your kernel. I have the following selected:
+
+* `CONFIG_SPI_SUN5I`
+* `CONFIG_SUN5I_SPI_NDMA`
+* `CONFIG_SPI_SPIDEV`
+
+You also have to have GPIO active:
+
+* `GPIO_SUNXI`
+
+The second important thing to do is to open the A13 pins that are used
+to talk to SPI#2 (the interface that is wired to the UEXT socket), and
+to configure them to be used for SPI. For this, you must modify the
+`script.bin` file that you will include in your SD-card. 
+
+The `script.bin` file is a 'compiled' version of a text file including
+a series of parameters that are accessible by the `sunxi` modules
+included in the kernel.
+
+Here is what you should do.
+
+1. You should already have downloaded the `A13_script_files.zip` file
+   [here](https://docs.google.com/file/d/0B-bAEPML8fwlNElERXRUZURTTUU/).
+1. Inside that file, you will file another archive, called
+   `fex2bin_bin_fex_tools.tar.gz`. Take it out, extract it to some
+   directory, and, if you are as paranoid as me, do a `make clean &&
+   make`. As a result, you will have an executable called `fexc`, and
+   two links to it, called `fex2bin` and `bin2fex`
+1. Pick your preferred `script.bin`, copy it to that directory, and
+   run:
+		./bin2fex script.bin script.fex	
+1. Edit the resulting `script.fex` file:
+   1. Comment out this block:
+	 ```
+	 [uart_para]
+	 uart_debug_port = 1
+	 uart_debug_tx = port:PG03<4><1><default><default>
+	 uart_debug_rx = port:PG04<4><1><default><default>
+	 ```
+	 by prepending a `;` to each line (pin PG04 is used by SPI).
+   1. Change line
+	 ```
+	 twi2_used = 1
+	 ```
+	 to
+	 ```
+	 twi2_used = 0
+	 ```
+	 (pins PB17 and PB18 are used by SPI)
+   1. Search the block beginning with `[spi2_para]`. Change it so that
+	 it reads:
+	 ```
+	 [spi2_para]
+	 spi_used = 1
+	 spi_cs_bitmap = 1
+	 spi_cs0 = port:PE00<4><default><default><default>
+	 spi_sclk = port:PE01<4><default><default><default>
+	 spi_mosi = port:PE02<4><default><default><default>
+	 spi_miso = port:PE03<4><default><default><default>
+	 ```
+  1. Add these two blocks:
+	 ```
+	 [spi_devices]
+	 spi_dev_num = 1
+	 
+	 [spi_board0]
+	 modalias = "spidev"
+	 max_speed_hz = 1000000
+	 bus_num = 2
+	 chip_select = 0
+	 mode = 0
+	 full_duplex = 0
+	 manual_cs = 0
+	 ```
+	 All this should make sure that the port connected to SPI bus#2 of
+	 your A13 (the one wired to the UEXT socket) is seen at boot, and
+	 managed, within the kernel, by `spidev` (see
+	 [here](https://www.kernel.org/doc/Documentation/spi/spidev) to
+	 learn more about spidev).
+  1. Make sure you can access the GPIO pins you need to access, by
+     adding this other block:
+	 ```
+	 [gpio_para]
+	 gpio_used = 1
+	 gpio_num = 4
+	 gpio_pin_1 = port:PG03<1><default><default><default>
+	 gpio_pin_2 = port:PG04<0><default><default><default>
+	 gpio_pin_3 = port:PB17<0><default><default><default>
+	 gpio_pin_4 = port:PB18<1><default><default><default>
+	 ```
+	 (you can see all IO ports of the A13 [here](http://linux-sunxi.org/A13/PIO))
+
+#### How to compile Mruby
+
 
 I talk to my boards via Ethernet, using a USB-to-USB cable from my
 main PC. All remote operations are performed from a SSH-connected
@@ -75,3 +172,8 @@ conf.gem(:github=>"asfluido/olinuxino",:branch=>"master")
 conf.gem(:github=>"mattn/mruby-onig-regexp",:branch=>"master")
 ```
 
+This makes sure that my gem, as well as the regular expression gem,
+are included into your version of the mruby executable.
+
+It is then sufficient to run `make`, and you will be able to run my
+test programs.
