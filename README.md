@@ -92,7 +92,7 @@ Here is what you should do.
    two links to it, called `fex2bin` and `bin2fex`
 1. Pick your preferred `script.bin`, copy it to that directory, call
    it `oldscript.bin` and run:
-	   `./bin2fex oldscript.bin > oldscript.fex	`
+	   `./bin2fex oldscript.bin > script.fex	`
 1. Edit the resulting `script.fex` file:
 
 	1. Comment out this block:
@@ -163,7 +163,7 @@ Here is what you should do.
 1. You should then create your own `script.bin` file . 
    run:
 
-		./fex2bin oldscript.fex > script.bin`
+		./fex2bin script.fex > script.bin`
 	   
    You should make sure that you put **this** file into your SD card.
 
