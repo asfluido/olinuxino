@@ -27,7 +27,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   mrb_fb_stc *s=(mrb_fb_stc *)mrb_malloc(mrb,sizeof(mrb_fb_stc));
   mrb_value v1,v2;
   int version;
-  __u32 vbits;
+  __u32 vbits,absbits;
 
   mrb_get_args(mrb,"SS",&v1,&v2);
 
@@ -38,15 +38,24 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   s->tsunit=open(RSTRING_PTR(v2),O_RDWR|O_NONBLOCK);
   if(s->tsunit<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
-
+  
   if(ioctl(s->tsunit,EVIOCGVERSION,&version)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad file (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
-
+  
   if(ioctl(s->tsunit,EVIOCGBIT(0,4),&vbits)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
-
-  fprintf(stderr,"EV version <%d> bits <%x>\n",version,vbits);
-
+  
+  if(!((vbits>>EV_ABS)&1) || !((vbits>>EV_KEY)&1))
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS/KEY\n",v2);
+  
+  if(ioctl(s->tsunit,EVIOCGBIT(EV_ABS,4),&absbits)<0)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT/2 (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
+  
+  if(!((absbits>>ABS_X)&1) || !((absbits>>ABS_Y)&1))
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS/KEY\n",v2);
+  
+  fprintf(stderr,"EV version <%d> bits <%4.4x> absbits <%4.4x>\n",version,vbits,absbits);
+     
   DATA_TYPE(self)=&mrb_fb_type;
   DATA_PTR(self)=s;
   return self;
