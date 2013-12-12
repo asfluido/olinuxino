@@ -59,7 +59,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   if(ioctl(s->tsunit,EVIOCGBIT(EV_KEY,KEY_CNT>>3),keybits)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT/3 (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
 
-  if(!(ISBIT(keybits,BTN_STYLUS)))
+  if(!(ISBIT(keybits,BTN_TOUCH)))
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support STYLUS\n",v2);  
 
   fprintf(stderr,"EV version <%x>\n",version);
