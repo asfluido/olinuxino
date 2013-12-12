@@ -50,11 +50,12 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   
   if(ioctl(s->tsunit,EVIOCGBIT(EV_ABS,4),&absbits)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT/2 (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
+
+  fprintf(stderr,"EV version <%d> bits <%4.4x> absbits <%4.4x>\n",version,vbits,absbits);
   
   if(!((absbits>>ABS_X)&1) || !((absbits>>ABS_Y)&1))
-    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS/KEY\n",v2);
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS X/Y\n",v2);
   
-  fprintf(stderr,"EV version <%d> bits <%4.4x> absbits <%4.4x>\n",version,vbits,absbits);
      
   DATA_TYPE(self)=&mrb_fb_type;
   DATA_PTR(self)=s;
