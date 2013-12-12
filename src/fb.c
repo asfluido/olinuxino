@@ -14,7 +14,7 @@
 #include <linux/input.h>
 #include <linux/fb.h>
 
-#define ISBIT(data,pos) ((data[(pos>>3)]>>(pos&3))&1)
+#define ISBIT(data,pos) ((data[(pos>>3)]>>(pos&7))&1)
 
 typedef struct mrb_fb
 {
