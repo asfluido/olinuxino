@@ -52,7 +52,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT/2 (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
 
   fprintf(stderr,"EV version <%d> bits <%2.2x%2.2x> absbits <%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x>\n",
-	  version,vbits[0],vbits[1],absbits[0],absbits[1],absbits[2],absbits[3],absbits[4],absbits[5],absbits[6],absbits[7]);
+	  version,vbits[1],vbits[0],absbits[7],absbits[6],absbits[5],absbits[4],absbits[3],absbits[2],absbits[1],absbits[0]);
   
 //  if(!((absbits>>ABS_X)&1) || !((absbits>>ABS_Y)&1))
 //    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS X/Y\n",v2);
