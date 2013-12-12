@@ -36,6 +36,24 @@ mrb_value mrb_led_initialize(mrb_state *mrb,mrb_value self)
   return self;
 }
 
+mrb_value mrb_led_on(mrb_state *mrb,mrb_value self)
+{
+  mrb_led_stc *s=DATA_PTR(self);
+
+  write(s->led_unit,&one,1);
+
+  return self;
+}
+
+mrb_value mrb_led_off(mrb_state *mrb,mrb_value self)
+{
+  mrb_led_stc *s=DATA_PTR(self);
+
+  write(s->led_unit,&zero,1);
+
+  return self;
+}
+
 static void led_free(mrb_state *mrb, void *p)
 {
   mrb_led_stc *s=(mrb_led_stc *)p;
