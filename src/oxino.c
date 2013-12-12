@@ -53,7 +53,7 @@ static mrb_value mrb_loggo(mrb_state *mrb,mrb_value self)
   return self;
 }
 
-static mrb_value mrb_getline(mrb_state *mrb,mrb_value self)
+static mrb_value mrb_readline(mrb_state *mrb,mrb_value self)
 {
   char *c;
   ssize_t len=getline(&c,NULL,stdin);
@@ -65,7 +65,7 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
 {
   mrb_define_method(mrb,mrb->object_class,"msleep",mrb_msleep,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,mrb->object_class,"loggo",mrb_loggo,MRB_ARGS_REQ(1));
-  mrb_define_method(mrb,mrb->object_class,"getline",mrb_getline,MRB_ARGS_NONE());
+  mrb_define_method(mrb,mrb->object_class,"readline",mrb_readline,MRB_ARGS_NONE());
   
   struct RClass *c=mrb_define_class(mrb,"Spi",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
