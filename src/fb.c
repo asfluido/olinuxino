@@ -59,14 +59,11 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   if(ioctl(s->tsunit,EVIOCGBIT(EV_KEY,KEY_CNT>>3),keybits)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT/3 (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
 
-  fprintf(stderr,"EV version <%d> bits <%2.2x%2.2x> absbits <%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x>\n",
-	  version,vbits[1],vbits[0],absbits[7],absbits[6],absbits[5],absbits[4],absbits[3],absbits[2],absbits[1],absbits[0]);
+  if(!(ISBIT(keybits,BTN_STYLUS)))
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support STYLUS\n",v2);  
 
-  int i;
-  for(i=(KEY_CNT>>3)-1;i>=0;i--)
-    if(keybits[i])
-      fprintf(stderr,"Keybits at %2.2x: %2.2x\n",i,keybits[i]);
-     
+  fprintf(stderr,"EV version <%x>\n",version);
+
   DATA_TYPE(self)=&mrb_fb_type;
   DATA_PTR(self)=s;
   return self;
