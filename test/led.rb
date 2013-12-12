@@ -6,7 +6,7 @@ status=false
 l.off
 
 loop do
-  getch
+  readline
   status=!status
   if(status)
     l.on
