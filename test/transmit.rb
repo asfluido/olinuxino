@@ -14,6 +14,8 @@ spi=Spi::new(2,0)
 m=Mrf89::new(spi)
 m.prepare_for_transmit
 
+l=Led::new
+
 sendout='The quick brown fox jumps over the lazy dog %2.2d %8.8d'
 
 cnt=0
@@ -24,7 +26,11 @@ loop do
     cnt+=1
     msg=sprintf(sendout,ch,cnt)
     loggo(msg)
+
+    l.on
     m.transmit(msg)
+    l.off
+    
     msleep(10)
   end
 end

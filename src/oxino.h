@@ -15,6 +15,7 @@
 #define __EXPORTED_HEADERS__
 
 #include <mruby.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -26,6 +27,7 @@
 #include "mruby/data.h"
 #include "mruby/value.h"
 #include "mruby/array.h"
+#include "mruby/string.h"
 
 extern unsigned char one,zero;
 

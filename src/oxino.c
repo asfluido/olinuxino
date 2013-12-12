@@ -26,6 +26,8 @@ extern mrb_value mrb_led_initialize(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_led_on(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_led_off(mrb_state *mrb,mrb_value self);
 
+extern mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self);
+
 static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
 {
   __u32 msecs;
@@ -53,10 +55,24 @@ static mrb_value mrb_loggo(mrb_state *mrb,mrb_value self)
   return self;
 }
 
+static mrb_value mrb_readline(mrb_state *mrb,mrb_value self)
+{
+  char *c=NULL;
+  size_t len=0;
+  ssize_t rlen=getline(&c,&len,stdin);
+  
+  mrb_value to_ret=mrb_str_new(mrb,c,rlen-1);
+
+  free(c);
+
+  return to_ret;
+}
+
 void mrb_olinuxino_gem_init(mrb_state* mrb)
 {
   mrb_define_method(mrb,mrb->object_class,"msleep",mrb_msleep,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,mrb->object_class,"loggo",mrb_loggo,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,mrb->object_class,"readline",mrb_readline,MRB_ARGS_NONE());
   
   struct RClass *c=mrb_define_class(mrb,"Spi",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
@@ -83,6 +99,11 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   mrb_define_method(mrb,c,"initialize",mrb_led_initialize,MRB_ARGS_NONE());
   mrb_define_method(mrb,c,"on",mrb_led_on,MRB_ARGS_NONE());
   mrb_define_method(mrb,c,"off",mrb_led_off,MRB_ARGS_NONE());
+
+  c=mrb_define_class(mrb,"Fb",mrb->object_class);
+  MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
+
+  mrb_define_method(mrb,c,"initialize",mrb_fb_initialize,MRB_ARGS_REQ(2));
 }
 
 void mrb_olinuxino_gem_final(mrb_state* mrb)

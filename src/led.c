@@ -40,7 +40,7 @@ mrb_value mrb_led_on(mrb_state *mrb,mrb_value self)
 {
   mrb_led_stc *s=DATA_PTR(self);
 
-  write(s->led_unit,&one,1);
+  write(s->unit,&one,1);
 
   return self;
 }
@@ -49,7 +49,7 @@ mrb_value mrb_led_off(mrb_state *mrb,mrb_value self)
 {
   mrb_led_stc *s=DATA_PTR(self);
 
-  write(s->led_unit,&zero,1);
+  write(s->unit,&zero,1);
 
   return self;
 }
