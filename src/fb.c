@@ -13,16 +13,20 @@
 
 #include <linux/input.h>
 #include <linux/fb.h>
+#include <pthread.h>
 
 #define ISBIT(data,pos) ((data[(pos>>3)]>>(pos&7))&1)
 
 typedef struct mrb_fb
 {
   int fbunit,tsunit;
+  __u8 exit_thread;
+  pthread_t ts_thr;
 } mrb_fb_stc;
 
 static void fb_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_fb_type={"Fb",fb_free};
+static void *ts(void *arg);
 
 mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 {
@@ -64,6 +68,11 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 
   fprintf(stderr,"EV version <%x>\n",version);
 
+  s->exit_thread=0
+  ret=pthread_create(&s->ts_thr,NULL,ts,s);
+  if(ret)
+    mrb_raisef(mrb,E_TYPE_ERROR,"Error starting ts thread (%S)\n",mrb_str_new_cstr(mrb,strerror(errno)));
+
   DATA_TYPE(self)=&mrb_fb_type;
   DATA_PTR(self)=s;
   return self;
@@ -72,6 +81,9 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 static void fb_free(mrb_state *mrb, void *p)
 {
   mrb_fb_stc *s=(mrb_fb_stc *)p;
+
+  s->exit_thread=1;
+  pthread_join(s->ts_thr,NULL);
   
   close(s->fbunit);
   close(s->tsunit);
@@ -79,4 +91,15 @@ static void fb_free(mrb_state *mrb, void *p)
   mrb_free(mrb,p);
 }
 
+static void *ts(void *arg)
+{
+  mrb_fb_stc *s=(mrb_fb_stc *)arg;
+  
+  while(!s->exit_thread)
+  {
+    putc('*');
+    usleep(10000);
+  }
 
+  return NULL;
+}
