@@ -14,6 +14,8 @@
 #include <linux/input.h>
 #include <linux/fb.h>
 
+#define ISBIT(data,pos) ((data[(pos>>3)]>>(pos&3))&1)
+
 typedef struct mrb_fb
 {
   int fbunit,tsunit;
@@ -45,8 +47,8 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   if(ioctl(s->tsunit,EVIOCGBIT(0,EV_CNT>>3),vbits)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
   
-//  if(!((vbits>>EV_ABS)&1) || !((vbits>>EV_KEY)&1))
-//    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS/KEY\n",v2);
+  if(!(ISBIT(vbits,EV_ABS)) || !(ISBIT(vbits,EV_KEY)))
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS/KEY\n",v2);
   
   if(ioctl(s->tsunit,EVIOCGBIT(EV_ABS,ABS_CNT>>3),absbits)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT/2 (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
@@ -54,9 +56,8 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   fprintf(stderr,"EV version <%d> bits <%2.2x%2.2x> absbits <%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x%2.2x>\n",
 	  version,vbits[1],vbits[0],absbits[7],absbits[6],absbits[5],absbits[4],absbits[3],absbits[2],absbits[1],absbits[0]);
   
-//  if(!((absbits>>ABS_X)&1) || !((absbits>>ABS_Y)&1))
-//    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS X/Y\n",v2);
-  
+  if(!(ISBIT(absbits,ABS_MT_POSITION_X)) || !(ISBIT(absbits,ABS_MT_POSITION_Y)))
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: does not support ABS X/Y\n",v2);  
      
   DATA_TYPE(self)=&mrb_fb_type;
   DATA_PTR(self)=s;
