@@ -104,7 +104,7 @@ static void *ts(void *arg)
     if(poll(&pfd,1,POLL_TIMEOUT)<=0)
       continue;
     read(s->tsunit,&ev,sizeof(struct input_event));
-    fprintf(stderr,"!! type %2.2x code %2.2x\n",ev.type,ev,code);
+    fprintf(stderr,"!! type %2.2x code %2.2x\n",ev.type,ev.code);
   }
 
   return NULL;
