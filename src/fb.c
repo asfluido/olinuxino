@@ -68,7 +68,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 
   fprintf(stderr,"EV version <%x>\n",version);
 
-  s->exit_thread=0
+  s->exit_thread=0;
   ret=pthread_create(&s->ts_thr,NULL,ts,s);
   if(ret)
     mrb_raisef(mrb,E_TYPE_ERROR,"Error starting ts thread (%S)\n",mrb_str_new_cstr(mrb,strerror(errno)));
