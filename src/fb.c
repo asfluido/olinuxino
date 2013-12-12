@@ -16,6 +16,7 @@
 #include <pthread.h>
 
 #define ISBIT(data,pos) ((data[(pos>>3)]>>(pos&7))&1)
+#define POLL_TIMEOUT 250
 
 typedef struct mrb_fb
 {
@@ -94,11 +95,15 @@ static void fb_free(mrb_state *mrb, void *p)
 static void *ts(void *arg)
 {
   mrb_fb_stc *s=(mrb_fb_stc *)arg;
-  
+  struct pollfd pfd={s->tsunit,POLLIN|POLLERR|POLLHUP,0};
+  struct input_event ev;
+
   while(!s->exit_thread)
   {
-    putchar('*');
-    usleep(10000);
+    if(poll(&pfd,1,POLL_TIMEOUT)<=0)
+      continue;
+    read(s->tsunit,&ev,sizeof(struct input_event));
+    fprintf(stderr,"!! type %2.2x code %2.2x\n",ev.type,ev,code);
   }
 
   return NULL;
