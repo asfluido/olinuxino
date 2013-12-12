@@ -14,6 +14,7 @@
 #include <linux/input.h>
 #include <linux/fb.h>
 #include <pthread.h>
+#include <poll.h>
 
 #define ISBIT(data,pos) ((data[(pos>>3)]>>(pos&7))&1)
 #define POLL_TIMEOUT 250
