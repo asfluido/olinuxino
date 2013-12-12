@@ -9,7 +9,8 @@ MRuby::Gem::Specification::new('olinuxino') do |spec|
   # spec.mruby.cc.flags << '-g'
 
   # Add libraries
-  # spec.linker.libraries.push('jemalloc')
+  spec.linker.libraries.push('jemalloc')
+  spec.linker.libraries.push('pthreads')
 
   # Default build files
   # spec.rbfiles = Dir.glob("#{dir}/mrblib/*.rb")
