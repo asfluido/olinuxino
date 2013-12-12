@@ -3,4 +3,4 @@
 f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 p f
 
-msleep(2000)
+msleep(10000)
