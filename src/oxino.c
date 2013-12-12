@@ -56,7 +56,8 @@ static mrb_value mrb_loggo(mrb_state *mrb,mrb_value self)
 static mrb_value mrb_readline(mrb_state *mrb,mrb_value self)
 {
   char *c=NULL;
-  ssize_t len=getline(&c,NULL,stdin);
+  size_t len=0;
+  ssize_t len=getline(&c,&len,stdin);
   
   mrb_value to_ret=mrb_str_new(mrb,c,len-1);
 
