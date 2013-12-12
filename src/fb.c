@@ -27,6 +27,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   mrb_fb_stc *s=(mrb_fb_stc *)mrb_malloc(mrb,sizeof(mrb_fb_stc));
   mrb_value v1,v2;
   int version;
+  __u32 vbits;
 
   mrb_get_args(mrb,"SS",&v1,&v2);
 
@@ -41,7 +42,10 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   if(ioctl(s->tsunit,EVIOCGVERSION,&version)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad file (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
 
-  fprintf(stderr,"EV version <%d>\n",version);
+  if(ioctl(s->tsunit,EVIOCGBIT(0,4),&vbits)<0)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad EVIOCGBIT (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
+
+  fprintf(stderr,"EV version <%d> bits <%x>\n",version,vbits);
 
   DATA_TYPE(self)=&mrb_fb_type;
   DATA_PTR(self)=s;
