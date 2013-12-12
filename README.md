@@ -151,14 +151,16 @@ Here is what you should do.
 
 			[gpio_para]
 			gpio_used = 1
-			gpio_num = 4
+			gpio_num = 5
 			gpio_pin_1 = port:PG03<1><default><default><default>
 			gpio_pin_2 = port:PG04<0><default><default><default>
 			gpio_pin_3 = port:PB17<0><default><default><default>
 			gpio_pin_4 = port:PB18<1><default><default><default>
+			gpio_pin_5 = port:PG09<1><default><default><default>
 
 	    (you can see all IO ports of the A13
-        [here](http://linux-sunxi.org/A13/PIO))
+        [here](http://linux-sunxi.org/A13/PIO)). Note that I am also
+        adding pin PG09, which is used by the Led module (see below).
 	
 1. You should then create your own `script.bin` file . 
    run:

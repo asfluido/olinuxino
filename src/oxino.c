@@ -22,6 +22,8 @@ extern mrb_value mrb_mrf89_read(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_req_para(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_mrf89_get_irqs(mrb_state *mrb,mrb_value self);
 
+extern mrb_value mrb_led_initialize(mrb_state *mrb,mrb_value self);
+
 static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
 {
   __u32 msecs;
@@ -72,6 +74,11 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   mrb_define_method(mrb,c,"read",mrb_mrf89_read,MRB_ARGS_REQ(2));
   mrb_define_method(mrb,c,"req_para",mrb_mrf89_req_para,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"get_irqs",mrb_mrf89_get_irqs,MRB_ARGS_NONE());
+
+  c=mrb_define_class(mrb,"Led",mrb->object_class);
+  MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
+
+  mrb_define_method(mrb,c,"initialize",mrb_led_initialize,MRB_ARGS_NONE);
 }
 
 void mrb_olinuxino_gem_final(mrb_state* mrb)
