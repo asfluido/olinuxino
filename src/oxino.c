@@ -57,8 +57,12 @@ static mrb_value mrb_readline(mrb_state *mrb,mrb_value self)
 {
   char *c;
   ssize_t len=getline(&c,NULL,stdin);
+  
+  mrb_value to_ret=mrb_str_new(mrb,c,len-1);
 
-  return mrb_str_new(mrb,c,len-1);  
+  free(c);
+
+  return to_ret;
 }
 
 void mrb_olinuxino_gem_init(mrb_state* mrb)
