@@ -56,8 +56,6 @@ mrb_value mrb_led_off(mrb_state *mrb,mrb_value self)
 
 static void led_free(mrb_state *mrb, void *p)
 {
-  fprintf(stderr,"Oooh\n");
-  
   mrb_led_stc *s=(mrb_led_stc *)p;
 
   close(s->unit);

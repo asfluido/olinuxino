@@ -26,6 +26,8 @@ extern mrb_value mrb_led_initialize(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_led_on(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_led_off(mrb_state *mrb,mrb_value self);
 
+extern mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self);
+
 static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
 {
   __u32 msecs;
@@ -97,6 +99,11 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   mrb_define_method(mrb,c,"initialize",mrb_led_initialize,MRB_ARGS_NONE());
   mrb_define_method(mrb,c,"on",mrb_led_on,MRB_ARGS_NONE());
   mrb_define_method(mrb,c,"off",mrb_led_off,MRB_ARGS_NONE());
+
+  c=mrb_define_class(mrb,"Fb",mrb->object_class);
+  MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
+
+  mrb_define_method(mrb,c,"initialize",mrb_fb_initialize,MRB_ARGS_REQ(2));
 }
 
 void mrb_olinuxino_gem_final(mrb_state* mrb)
