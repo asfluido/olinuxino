@@ -34,6 +34,7 @@ typedef struct mrb_fb
 
 static void fb_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_fb_type={"Fb",fb_free};
+static void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col);
 static void *ts(void *arg);
 
 mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
@@ -81,6 +82,9 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   if(ioctl(s->fbunit,FBIOGET_VSCREENINFO,&s->var)<0)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad FBIOGET_VSCREENINFO (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
 
+  if(s->var.bits_per_pixel!=32)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: only support 32bpp (found %S)\n",v1,mrb_fixnum_value(s->var.bits_per_pixel));
+
   s->fb=mmap(NULL,s->fix.smem_len,PROT_READ|PROT_WRITE,MAP_FILE|MAP_SHARED,s->fbunit,0);
   if(s->fb==(__u8 *)-1)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: error in fb mmap (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
@@ -113,6 +117,48 @@ mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
   return to_ret;
 }
 
+mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
+{
+  mrb_fb_stc *s=DATA_PTR(self);
+  int xf,yf,xt,yt,x,y,i,xd,yd,step;
+  __u8 rev;
+  __u32 col;
+
+  mrb_get_args(mrb,"iiiii",&xf,&yf,&xt,&yt,&col);
+
+  int xd=abs(xt-xf);
+  int yd=abs(yt-yf);
+
+  if(xd>yd)
+  {
+    fact=yd/(float)xd;
+    if(xt>xf)
+    {
+      for(i=xf,i<=xt;i++)
+	paint_pixel(s,i,(int)(yf+fact*i),col);
+    }
+    else
+    {
+      for(i=xt,i<=xf;i++)
+	paint_pixel(s,i,(int)(yt-fact*i),col);
+    }
+  }
+  else
+  {
+    fact=xd/(float)yd;
+    if(xt>xf)
+    {
+      for(i=yf,i<=yt;i++)
+	paint_pixel(s,(int)(xf+fact*i),i,col);
+    }
+    else
+    {
+      for(i=yt,i<=yf;i++)
+	paint_pixel(s,(int)(xt-fact*i),i,col);
+    }
+  }
+}
+
 static void fb_free(mrb_state *mrb, void *p)
 {
   mrb_fb_stc *s=(mrb_fb_stc *)p;
@@ -128,6 +174,14 @@ static void fb_free(mrb_state *mrb, void *p)
 
   
   mrb_free(mrb,p);
+}
+
+static void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col)
+{
+  if(x<0 || x>=s->var.xres_virtual || y<0 || y>=s->var.yres_virtual)
+    return;
+
+  s->lines[y][x]=col;  
 }
 
 static void *ts(void *arg)
