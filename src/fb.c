@@ -141,7 +141,6 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
 
   xd=abs(xt-xf);
   yd=abs(yt-yf);
-  fprintf(stderr,"{%d,%d,%d,%d,%x,%d,%d}",xf,yf,xt,yt,col,xd,yd);
 
   if(xd>yd)
   {
@@ -194,7 +193,7 @@ static void fb_free(mrb_state *mrb, void *p)
 
 static inline void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col)
 {
-  fprintf(stderr,"[%d,%d,%x]",x,y,col);
+//  fprintf(stderr,"[%d,%d,%x]",x,y,col);
   
   if(x<0 || x>=s->var.xres_virtual || y<0 || y>=s->var.yres_virtual)
     return;
