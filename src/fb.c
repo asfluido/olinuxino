@@ -26,6 +26,8 @@ typedef struct mrb_fb
   pthread_t ts_thr;
   mrb_bool touching;
   __s32 p_x,p_y;
+  struct fb_fix_screeninfo fix;
+  struct fb_var_screeninfo var;
 } mrb_fb_stc;
 
 static void fb_free(mrb_state *mrb, void *p);
@@ -40,10 +42,6 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   __u8 vbits[EV_CNT>>3],absbits[ABS_CNT>>3],keybits[KEY_CNT>>3];
 
   mrb_get_args(mrb,"SS",&v1,&v2);
-
-  s->fbunit=open(RSTRING_PTR(v1),O_RDWR);
-  if(s->fbunit<0)
-    mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
   
   s->tsunit=open(RSTRING_PTR(v2),O_RDWR|O_NONBLOCK);
   if(s->tsunit<0)
@@ -72,6 +70,17 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 
   fprintf(stderr,"EV version <%x>\n",version);
 
+  s->fbunit=open(RSTRING_PTR(v1),O_RDWR);
+  if(s->fbunit<0)
+    mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
+
+  if(ioctl(s->fbunit,FBIOGET_FSCREENINFO,&s->fix)<0)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad FBIOGET_FSCREENINFO (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
+  if(ioctl(s->fbunit,FBIOGET_VSCREENINFO,&s->var)<0)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad FBIOGET_VSCREENINFO (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
+
+  fprintf(stderr,"FB: %s (%dx%d)\n",s->fix.id,s->var.xres,s->var.yres);
+  
   s->exit_thread=0;
   int ret=pthread_create(&s->ts_thr,NULL,ts,s);
   if(ret)
