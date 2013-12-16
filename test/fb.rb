@@ -6,7 +6,6 @@ loggo("Ueppolo: #{sx}x#{sy}")
 touch=nil
 loop do
   vs=[rand(sx),rand(sy),rand(sx),rand(sy),rand(0xffffff)]
-  loggo("Uappolo: #{vs}")
   
   f.line(*vs)
   nt,px,py=f.status
