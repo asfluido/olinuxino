@@ -29,7 +29,7 @@ typedef struct mrb_fb
   __s32 p_x,p_y;
   struct fb_fix_screeninfo fix;
   struct fb_var_screeninfo var;
-  __u8 *fb,**lines;
+  __u32 *fb,**lines;
 } mrb_fb_stc;
 
 static void fb_free(mrb_state *mrb, void *p);
