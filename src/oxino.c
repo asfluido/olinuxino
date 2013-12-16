@@ -27,6 +27,7 @@ extern mrb_value mrb_led_on(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_led_off(mrb_state *mrb,mrb_value self);
 
 extern mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_size(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self);
 
 static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
