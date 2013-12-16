@@ -22,7 +22,8 @@
 typedef struct mrb_fb
 {
   int fbunit,tsunit;
-  __u8 exit_thread;
+  __u8 exit_thread,touching;
+  __s32 p_x,p_y;
   pthread_t ts_thr;
 } mrb_fb_stc;
 
@@ -80,6 +81,18 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   return self;
 }
 
+mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
+{
+  mrb_fb_stc *s=DATA_PTR(self);
+  mrb_value to_ret=mrb_ary_new(mrb);
+
+  mrb_ary_push(mrb,to_ret,mrb_bool_value(s->touching));
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->p_x));
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->p_y));
+
+  return to_ret;
+}
+
 static void fb_free(mrb_state *mrb, void *p)
 {
   mrb_fb_stc *s=(mrb_fb_stc *)p;
@@ -104,7 +117,25 @@ static void *ts(void *arg)
     if(poll(&pfd,1,POLL_TIMEOUT)<=0)
       continue;
     read(s->tsunit,&ev,sizeof(struct input_event));
-    fprintf(stderr,"!! type %2.2x code %2.2x value %2.2x\n",ev.type,ev.code,ev.value);
+//    fprintf(stderr,"!! type %2.2x code %2.2x value %2.2x\n",ev.type,ev.code,ev.value);
+    if(ev.type==EV_ABS)
+    {
+      if(ev.code==ABS_MT_TOUCH_MAJOR)
+      {
+	if(ev.value>0)
+	{
+	  s->touching=1;
+	}
+	else
+	{
+	  s->touching=0;
+	}
+      }
+      else if(ev.code==ABS_MT_POSITION_X)
+	s->p_x=ev.value;
+      else if(ev.code==ABS_MT_POSITION_Y)
+	s->p_y=ev.value;
+    }
   }
 
   return NULL;
