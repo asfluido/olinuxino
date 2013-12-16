@@ -40,7 +40,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 {
   mrb_fb_stc *s=(mrb_fb_stc *)mrb_malloc(mrb,sizeof(mrb_fb_stc));
   mrb_value v1,v2;
-  int version;
+  int version,i;
   __u8 vbits[EV_CNT>>3],absbits[ABS_CNT>>3],keybits[KEY_CNT>>3];
 
   mrb_get_args(mrb,"SS",&v1,&v2);
@@ -84,6 +84,10 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   s->fb=mmap(NULL,s->fix.smem_len,PROT_READ|PROT_WRITE,MAP_FILE|MAP_SHARED,s->fbunit,0);
   if(s->fb==(__u8 *)-1)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: error in fb mmap (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
+
+  s->lines=malloc(sizeof(__u8 *)*s->var.yres_virtual);
+  for(i=0;i<s->var.yres_virtual;i++)
+    s->lines[i]=s->fb+s->fix.line_length(i);
   
   fprintf(stderr,"FB: [%s] (%dx%d)\n",s->fix.id,s->var.xres,s->var.yres);
   
@@ -115,9 +119,13 @@ static void fb_free(mrb_state *mrb, void *p)
 
   s->exit_thread=1;
   pthread_join(s->ts_thr,NULL);
-  
+
+  munmap(s->fb,s->fix.smem_len);
+  free(s->lines);
+
   close(s->fbunit);
   close(s->tsunit);
+
   
   mrb_free(mrb,p);
 }
