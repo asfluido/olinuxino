@@ -34,7 +34,7 @@ typedef struct mrb_fb
 
 static void fb_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_fb_type={"Fb",fb_free};
-static void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col);
+static inline void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col);
 static void *ts(void *arg);
 
 mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
@@ -190,8 +190,10 @@ static void fb_free(mrb_state *mrb, void *p)
   mrb_free(mrb,p);
 }
 
-static void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col)
+static inline void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col)
 {
+  fprintf(stderr,"[%d,%d,%x]",x,y,col);
+  
   if(x<0 || x>=s->var.xres_virtual || y<0 || y>=s->var.yres_virtual)
     return;
 
