@@ -110,8 +110,8 @@ mrb_value mrb_fb_size(mrb_state *mrb,mrb_value self)
   mrb_fb_stc *s=DATA_PTR(self);
   mrb_value to_ret=mrb_ary_new(mrb);
 
-  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->var.xres_virtual));
-  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->var.yres_virtual));
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->var.xres));
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->var.yres));
 
   return to_ret;
 }
@@ -194,7 +194,7 @@ static inline void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col)
 {
 //  fprintf(stderr,"[%d,%d,%x]",x,y,col);
   
-  if(x<0 || x>=s->var.xres_virtual || y<0 || y>=s->var.yres_virtual)
+  if(x<0 || x>=s->var.xres || y<0 || y>=s->var.yres)
     return;
 
   s->lines[y][x]=col;  
