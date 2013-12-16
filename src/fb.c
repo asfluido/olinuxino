@@ -120,8 +120,7 @@ mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
 mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
 {
   mrb_fb_stc *s=DATA_PTR(self);
-  int xf,yf,xt,yt,i,xd,yd,step;
-  __u8 rev;
+  int xf,yf,xt,yt,i,xd,yd;
   __u32 col;
   float fact;
 
@@ -158,6 +157,8 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
 	paint_pixel(s,(int)(xt-fact*i),i,col);
     }
   }
+
+  return self;
 }
 
 static void fb_free(mrb_state *mrb, void *p)
