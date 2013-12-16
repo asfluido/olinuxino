@@ -11,6 +11,7 @@
 
 #include "oxino.h"
 
+#include <sys/mman.h>
 #include <linux/input.h>
 #include <linux/fb.h>
 #include <pthread.h>
@@ -28,6 +29,7 @@ typedef struct mrb_fb
   __s32 p_x,p_y;
   struct fb_fix_screeninfo fix;
   struct fb_var_screeninfo var;
+  __u8 *fb,**lines;
 } mrb_fb_stc;
 
 static void fb_free(mrb_state *mrb, void *p);
@@ -75,11 +77,15 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
     mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
 
   if(ioctl(s->fbunit,FBIOGET_FSCREENINFO,&s->fix)<0)
-    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad FBIOGET_FSCREENINFO (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad FBIOGET_FSCREENINFO (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
   if(ioctl(s->fbunit,FBIOGET_VSCREENINFO,&s->var)<0)
-    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad FBIOGET_VSCREENINFO (%S)\n",v2,mrb_str_new_cstr(mrb,strerror(errno)));
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: bad FBIOGET_VSCREENINFO (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
 
-  fprintf(stderr,"FB: %s (%dx%d)\n",s->fix.id,s->var.xres,s->var.yres);
+  s->fb=mmap(NULL,s->fix.smem_len,PROT_READ|PROT_WRITE,MAP_FILE|MAP_SHARED,s->fbunit,0);
+  if(s->fb==(__u8 *)-1)
+    mrb_raisef(mrb,E_TYPE_ERROR,"%S: error in fb mmap (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
+  
+  fprintf(stderr,"FB: [%s] (%dx%d)\n",s->fix.id,s->var.xres,s->var.yres);
   
   s->exit_thread=0;
   int ret=pthread_create(&s->ts_thr,NULL,ts,s);
