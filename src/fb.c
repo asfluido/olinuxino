@@ -91,7 +91,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 
   s->lines=malloc(sizeof(__u8 *)*s->var.yres_virtual);
   for(i=0;i<s->var.yres_virtual;i++)
-    s->lines[i]=s->fb+s->fix.line_length*i;
+    s->lines[i]=s->fb+s->var.xres_virtual*i;
   
   fprintf(stderr,"FB: [%s] (%dx%d, %d bpp)\n",s->fix.id,s->var.xres,s->var.yres,s->var.bits_per_pixel);
   
@@ -159,7 +159,7 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
   else
   {
     fact=xd/(float)yd;
-    if(xt>xf)
+    if(yt>yf)
     {
       for(i=yf;i<=yt;i++)
 	paint_pixel(s,(int)(xf+fact*i),i,col);
@@ -186,7 +186,6 @@ static void fb_free(mrb_state *mrb, void *p)
 
   close(s->fbunit);
   close(s->tsunit);
-
   
   mrb_free(mrb,p);
 }
