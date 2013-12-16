@@ -120,14 +120,14 @@ mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
 mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
 {
   mrb_fb_stc *s=DATA_PTR(self);
-  int xf,yf,xt,yt,x,y,i,xd,yd,step;
+  int xf,yf,xt,yt,i,xd,yd,step;
   __u8 rev;
   __u32 col;
 
   mrb_get_args(mrb,"iiiii",&xf,&yf,&xt,&yt,&col);
 
-  int xd=abs(xt-xf);
-  int yd=abs(yt-yf);
+  xd=abs(xt-xf);
+  yd=abs(yt-yf);
 
   if(xd>yd)
   {
