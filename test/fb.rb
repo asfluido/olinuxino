@@ -5,7 +5,7 @@ f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 touch=nil
 loop do
   nt,px,py=f.status
-  if(nt!=touch)
+  unless(nt==touch)
     p [nt,touch,px,py]
     touch=nt
     loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
