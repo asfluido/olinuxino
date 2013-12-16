@@ -87,7 +87,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 
   s->lines=malloc(sizeof(__u8 *)*s->var.yres_virtual);
   for(i=0;i<s->var.yres_virtual;i++)
-    s->lines[i]=s->fb+s->fix.line_length(i);
+    s->lines[i]=s->fb+s->fix.line_length*i;
   
   fprintf(stderr,"FB: [%s] (%dx%d)\n",s->fix.id,s->var.xres,s->var.yres);
   
