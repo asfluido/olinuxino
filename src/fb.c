@@ -123,6 +123,7 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
   int xf,yf,xt,yt,i,xd,yd,step;
   __u8 rev;
   __u32 col;
+  float fact;
 
   mrb_get_args(mrb,"iiiii",&xf,&yf,&xt,&yt,&col);
 
@@ -134,12 +135,12 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
     fact=yd/(float)xd;
     if(xt>xf)
     {
-      for(i=xf,i<=xt;i++)
+      for(i=xf;i<=xt;i++)
 	paint_pixel(s,i,(int)(yf+fact*i),col);
     }
     else
     {
-      for(i=xt,i<=xf;i++)
+      for(i=xt;i<=xf;i++)
 	paint_pixel(s,i,(int)(yt-fact*i),col);
     }
   }
@@ -148,12 +149,12 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
     fact=xd/(float)yd;
     if(xt>xf)
     {
-      for(i=yf,i<=yt;i++)
+      for(i=yf;i<=yt;i++)
 	paint_pixel(s,(int)(xf+fact*i),i,col);
     }
     else
     {
-      for(i=yt,i<=yf;i++)
+      for(i=yt;i<=yf;i++)
 	paint_pixel(s,(int)(xt-fact*i),i,col);
     }
   }
