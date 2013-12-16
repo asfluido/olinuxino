@@ -126,12 +126,10 @@ static void *ts(void *arg)
 	if(ev.value>0)
 	{
 	  s->touching=TRUE;
-	  fputc('+',stderr);
 	}
 	else
 	{
 	  s->touching=FALSE;
-	  fputc('.',stderr);
 	}
       }
       else if(ev.code==ABS_MT_POSITION_X)
