@@ -136,10 +136,12 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
   float fact;
 
   mrb_get_args(mrb,"iiiii",&xf,&yf,&xt,&yt,&col);
+  
   col|=0xff000000;  
 
   xd=abs(xt-xf);
   yd=abs(yt-yf);
+  fprintf(stderr,"{%d,%d,%d,%d,%x,%d,%d}",xf,yf,xt,yt,col,xd,yd);
 
   if(xd>yd)
   {
