@@ -7,7 +7,7 @@ touch=nil
 loop do
   vs=[rand(sx),rand(sy),rand(sx),rand(sy),rand(0xffffff)]
 
-  if(rand(5)==0)
+  if(rand(100)==0)
     f.rect(*vs)
   else
     f.line(*vs)
