@@ -86,10 +86,10 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: only support 32bpp (found %S)\n",v1,mrb_fixnum_value(s->var.bits_per_pixel));
 
   s->fb=mmap(NULL,s->fix.smem_len,PROT_READ|PROT_WRITE,MAP_FILE|MAP_SHARED,s->fbunit,0);
-  if(s->fb==(__u8 *)-1)
+  if(s->fb==(__u32 *)-1)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: error in fb mmap (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
 
-  s->lines=malloc(sizeof(__u8 *)*s->var.yres_virtual);
+  s->lines=malloc(sizeof(__u32 *)*s->var.yres_virtual);
   for(i=0;i<s->var.yres_virtual;i++)
     s->lines[i]=s->fb+s->var.xres_virtual*i;
   
