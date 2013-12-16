@@ -22,9 +22,10 @@
 typedef struct mrb_fb
 {
   int fbunit,tsunit;
-  __u8 exit_thread,touching;
-  __s32 p_x,p_y;
+  __u8 exit_thread;
   pthread_t ts_thr;
+  mrb_bool touching;
+  __s32 p_x,p_y;
 } mrb_fb_stc;
 
 static void fb_free(mrb_state *mrb, void *p);
@@ -124,11 +125,11 @@ static void *ts(void *arg)
       {
 	if(ev.value>0)
 	{
-	  s->touching=1;
+	  s->touching=TRUE;
 	}
 	else
 	{
-	  s->touching=0;
+	  s->touching=FALSE;
 	}
       }
       else if(ev.code==ABS_MT_POSITION_X)
