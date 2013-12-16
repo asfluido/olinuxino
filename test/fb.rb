@@ -7,7 +7,7 @@ touch=nil
 loop do
   vs=[rand(sx),rand(sy),rand(sx),rand(sy),rand(0xffffff)]
   
-  f.line(*vs)
+  f.rect(*vs)
   nt,px,py=f.status
   unless(nt==touch)
     touch=nt

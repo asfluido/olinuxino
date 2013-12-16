@@ -174,6 +174,46 @@ mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
   return self;
 }
 
+mrb_value mrb_fb_rect(mrb_state *mrb,mrb_value self)
+{
+  mrb_fb_stc *s=DATA_PTR(self);
+  int xf,yf,xt,yt,i,x,y;
+  __u32 col,*ptr;
+
+  mrb_get_args(mrb,"iiiii",&xf,&yf,&xt,&yt,&col);
+
+  if(xf>xt)
+  {
+    i=xf;
+    xf=xt;
+    xt=i;
+  }
+  if(yf>yt)
+  {
+    i=yf;
+    yf=yt;
+    yt=i;
+  }
+
+  if(xf<0)
+    xf=0;
+  if(xf>=s->var.xres)
+    xf=s->var.xres-1;
+  if(yf<0)
+    yf=0;
+  if(yf>=s->var.yres)
+    yf=s->var.yres-1;
+
+  for(y=yf;y<=ft;y++)
+  {
+    ptr=s->lines[y]+xf;
+    for(x=xf;x<=xt;x++)
+      *ptr++=col;
+  }
+  
+  return self;
+}    
+
 static void fb_free(mrb_state *mrb, void *p)
 {
   mrb_fb_stc *s=(mrb_fb_stc *)p;
