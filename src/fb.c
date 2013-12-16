@@ -89,7 +89,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   for(i=0;i<s->var.yres_virtual;i++)
     s->lines[i]=s->fb+s->fix.line_length*i;
   
-  fprintf(stderr,"FB: [%s] (%dx%d)\n",s->fix.id,s->var.xres,s->var.yres);
+  fprintf(stderr,"FB: [%s] (%dx%d, %d bpp)\n",s->fix.id,s->var.xres,s->var.yres,s->var.bits_per_pixel);
   
   s->exit_thread=0;
   int ret=pthread_create(&s->ts_thr,NULL,ts,s);
