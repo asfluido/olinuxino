@@ -105,6 +105,17 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   return self;
 }
 
+mrb_value mrb_fb_size(mrb_state *mrb,mrb_value self)
+{
+  mrb_fb_stc *s=DATA_PTR(self);
+  mrb_value to_ret=mrb_ary_new(mrb);
+
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->var.xres_virtual));
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->var.yres_virtual));
+
+  return to_ret;
+}
+  
 mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
 {
   mrb_fb_stc *s=DATA_PTR(self);

@@ -105,6 +105,7 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
 
   mrb_define_method(mrb,c,"initialize",mrb_fb_initialize,MRB_ARGS_REQ(2));
+  mrb_define_method(mrb,c,"size",mrb_fb_size,MRB_ARGS_NONE());
   mrb_define_method(mrb,c,"status",mrb_fb_status,MRB_ARGS_NONE());
 }
 
