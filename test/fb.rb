@@ -10,5 +10,5 @@ loop do
     touch=nt
     loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
   end
-  f.line(rand(sx),rand(sy),rand(sx),rand(sy),rand(0xffffff)|0xff000000)
+  f.line(rand(sx),rand(sy),rand(sx),rand(sy),rand(0xffffff))
 end
