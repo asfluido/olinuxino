@@ -6,8 +6,10 @@ touch=nil
 loop do
   nt,px,py=f.status
   if(nt!=touch)
-    p [nt,px,py]
+    p [nt,touch,px,py]
     touch=nt
     loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
+  else
+    p [nt,touch,nt==touch]
   end
 end
