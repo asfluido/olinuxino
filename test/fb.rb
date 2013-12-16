@@ -9,4 +9,5 @@ loop do
     touch=nt
     loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
   end
+  msleep(10)
 end
