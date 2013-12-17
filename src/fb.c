@@ -241,6 +241,8 @@ mrb_value mrb_fb_rect(mrb_state *mrb,mrb_value self)
 
 static void fb_free(mrb_state *mrb, void *p)
 {
+  fprintf(stderr,"FREE!\n");
+  
   mrb_fb_stc *s=(mrb_fb_stc *)p;
 
   s->exit_thread=1;
