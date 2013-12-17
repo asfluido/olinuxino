@@ -7,11 +7,10 @@ class Fb
   def calibrate
     sx,sy=size()
 
-    [[MARG,MARG],[sx-MARG,MARG],[sx-MARG,sy-MARG],[MARG,sy-MARG]].each do |x,y|
-      fx,fy=getfinger(x,y)
-      loggo("#{[x,y]} -> #{[fx,fy]}")
+    res=[[MARG,MARG],[sx-MARG,MARG],[sx-MARG,sy-MARG],[MARG,sy-MARG]].map do |x,y|
+      getfinger(x,y)      
     end
-
+    p res
   end
 
   def getfinger(x,y)
