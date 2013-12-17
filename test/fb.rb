@@ -1,6 +1,6 @@
 #!/usr/src/mruby/bin/mruby
 
-RS=5
+RECT=5
 
 f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 
