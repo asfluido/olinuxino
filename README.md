@@ -15,10 +15,34 @@ targeted to small harware and embedded application.
 
 Currently, the code focuses on:
 
+* controlling the onboard LED
 * talking to the **SPI** serial interface
 * talking to an
   [Olimex MOD-MRF89-868](https://www.olimex.com/Products/Modules/RF/MOD-MRF89-868/)
   board via the **UEXT** interface of the A13 board.
+* a beginning of a library for managing the framebuffer and
+  touchscreen of an
+  [Olimex A13-LCD43TS](https://www.olimex.com/Products/OLinuXino/A13/A13-LCD43TS) 4.3inch
+  touch-screen.
+
+### The LED
+
+The A13 board has an on-board green LED that can be controlled via
+GPIO pin **PG09**. Once the pin is appropriately configured (see
+below), you gain control of it with:
+
+```ruby
+l=Led::new
+```
+
+and you switch it on and of as follows:
+
+```ruby
+l.on
+l.off
+```
+
+### MRF89
 
 The **MRF89** board is a radio receiver/transmitter board for the
 [868MHz (SRD)](http://en.wikipedia.org/wiki/Short_Range_Devices)
@@ -160,7 +184,7 @@ Here is what you should do.
 
 	    (you can see all IO ports of the A13
         [here](http://linux-sunxi.org/A13/PIO)). Note that I am also
-        adding pin PG09, which is used by the Led module (see below).
+        adding pin PG09, which is used by the LED module (see above).
 	
 1. You should then create your own `script.bin` file . 
    run:
@@ -173,7 +197,24 @@ With the above kernel and `script.bin`, you should be able to see file
 `spidev2.0` in your `/dev/` tree. This means that the SPI port is
 recognized.
 
-#### How to compile Mruby
+### The touchscreen
+
+The library is in communications both with the framebuffer surface
+(mmapped) and with the output of the touchscreen (`/dev/input`
+file). As of now, it is capable of:
+
+* returning the current touchscreen position, and whether the screen
+  is currently being touched or not.
+* filling the screen
+* drawing lines
+* drawing rectangles
+* performing a simple calibration procedure. The calibration results
+  are saved in a file in the user's home directory.
+
+It goes without saying that I have no idea whether all of this works
+for any of the other screens that Olimex produces. 
+
+### How to compile Mruby
 
 Log in to your board. Make sure you have the normal compilation
 environment. *Make sure you install a version of Ruby!* It is needed
@@ -194,9 +235,19 @@ This makes sure that my gem, as well as the regular expression gem,
 are included into your version of the mruby executable.
 
 It is then sufficient to run `make`, and you will be able to run my
-test programs.
+test programs. `./minirake -p` connects to the remote gem directories
+and syncronizes with them if needed. 
 
-#### Testing my code
+### My test code
+
+The `/test` folder includes a few scripts I wrote for testing my code.
+
+#### Led
+
+By running `led.rb`, you will invoke a very simple script that toggles
+the onboard LED on/off every time you press return.
+
+#### Mrf89
 
 In order to test my code you need to have two boards. The first one
 will be transmitting, the second one will be receiving.
@@ -218,3 +269,13 @@ On the second board, start the receiver by running:
 Whenever a message is received on channel 4, it will be printed on
 your screen.
 
+#### Framebuffer
+
+Script `fb.rb` exercises the current capabilities of my library.
+
+The first time you run it, you must calibrate the screen - just touch
+on the four crosses in sequence.
+
+Then, multicoloured segments and rectangles are drawn very quickly on
+the screen. If you touch the screen, a coloured square will follow your
+finger around.

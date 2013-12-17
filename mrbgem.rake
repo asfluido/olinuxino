@@ -3,7 +3,9 @@ MRuby::Gem::Specification::new('olinuxino') do |spec|
   spec.author='Carlo E.Prelz'
  
   # Add compile flags
-  # spec.cc.flags << ''
+  ['-g','-O6','-funsigned-char','-fPIC','-ffast-math','-Werror','-Wall','-Wcast-align','-Wno-declaration-after-statement','-Wno-unused-function','-Wno-unused-but-set-variable'].each do |f|
+    spec.cc.flags.push(f) 	
+  end
 
   # Add cflags to all
   # spec.mruby.cc.flags << '-g'

@@ -27,6 +27,13 @@ extern mrb_value mrb_led_on(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_led_off(mrb_state *mrb,mrb_value self);
 
 extern mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_size(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_fill(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_rect(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_fb_calibdata(mrb_state *mrb,mrb_value self);
 
 static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
 {
@@ -104,6 +111,13 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
 
   mrb_define_method(mrb,c,"initialize",mrb_fb_initialize,MRB_ARGS_REQ(2));
+  mrb_define_method(mrb,c,"size",mrb_fb_size,MRB_ARGS_NONE());
+  mrb_define_method(mrb,c,"status",mrb_fb_status,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,c,"fill",mrb_fb_fill,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,c,"line",mrb_fb_line,MRB_ARGS_REQ(5));
+  mrb_define_method(mrb,c,"rect",mrb_fb_rect,MRB_ARGS_REQ(5));
+  mrb_define_method(mrb,c,"save_calibdata",mrb_fb_save_calibdata,MRB_ARGS_REQ(4));
+  mrb_define_method(mrb,c,"calibdata",mrb_fb_calibdata,MRB_ARGS_NONE());
 }
 
 void mrb_olinuxino_gem_final(mrb_state* mrb)
