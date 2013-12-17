@@ -103,7 +103,7 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
 
   i=open("/sys/class/graphics/fbcon/cursor_blink",O_WRONLY);
   write(i,"0",1);
-  close(i)
+  close(i);
   
   s->exit_thread=0;
   int ret=pthread_create(&s->ts_thr,NULL,ts,s);
@@ -257,7 +257,7 @@ static void fb_free(mrb_state *mrb, void *p)
 
   int i=open("/sys/class/graphics/fbcon/cursor_blink",O_WRONLY);
   write(i,"1",1);
-  close(i)
+  close(i);
   
   mrb_free(mrb,p);
 }
