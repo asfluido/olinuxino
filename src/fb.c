@@ -32,6 +32,7 @@ typedef struct mrb_fb
   struct fb_fix_screeninfo fix;
   struct fb_var_screeninfo var;
   __u32 *fb,**lines,screen_size;
+  mrb_float *calibdata;
 } mrb_fb_stc;
 
 static void fb_free(mrb_state *mrb, void *p);
@@ -99,6 +100,20 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
     s->lines[i]=s->fb+s->var.xres_virtual*i;
   
   fprintf(stderr,"FB: [%s] (%dx%d, %d bpp)\n",s->fix.id,s->var.xres,s->var.yres,s->var.bits_per_pixel);
+
+/*
+ * load calibdata if present
+ */
+
+  i=open(strcat(getenv("HOME"),CALIBDATA_FILE),O_RDONLY);
+  if(i>0)
+  {
+    s->calibdata=malloc(sizeof(mrb_float)*4);
+    read(i,s->calibdata,sizeof(mrb_float)*4);
+    close(i);
+  }
+  else
+    s->calibdata=NULL;
 
 /*
  * Disable cursor blink
@@ -256,6 +271,22 @@ mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self)
 
   return self;
 }    
+
+mrb_value mrb_fb_calibdata(mrb_state *mrb,mrb_value self)
+{
+  mrb_fb_stc *s=DATA_PTR(self);
+
+  if(s->calibdata==NULL)
+    return mrb_false_value();  
+    
+  mrb_value to_ret=mrb_ary_new(mrb);
+  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[0]));
+  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[1]));
+  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[2]));
+  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[3]));  
+
+  returnm to_ret;
+}
 
 static void fb_free(mrb_state *mrb, void *p)
 {
