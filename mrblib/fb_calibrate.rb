@@ -10,7 +10,14 @@ class Fb
     res=[[MARG,MARG],[sx-MARG,MARG],[sx-MARG,sy-MARG],[MARG,sy-MARG]].map do |x,y|
       getfinger(x,y)      
     end
-    p res
+    xpclow=(res[0][0]+res[3][0])/2.0
+    xpchigh=(res[1][0]+res[2][0])/2.0
+    xperdig=(sx-MARG*2)/(xpchigh-xpclow)
+    ypclow=(res[0][1]+res[1][1])/2.0
+    ypchigh=(res[2][1]+res[3][1])/2.0
+    yperdig=(sy-MARG*2)/(ypchigh-ypclow)
+    
+    p [xperdig,yperdig]
   end
 
   def getfinger(x,y)
