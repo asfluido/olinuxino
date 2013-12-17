@@ -1,6 +1,6 @@
 #!/usr/src/mruby/bin/mruby
 
-RECT=5
+RECT=25
 
 f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 
@@ -30,8 +30,6 @@ loop do
   if(nt)
     cx=((px-cd[0])*cd[1]).to_i
     cy=((py-cd[2])*cd[3]).to_i
-    a=[cx-RECT,cy-RECT,cx+RECT,cy+RECT,rand(0xffffff)]
-    p a
-    f.rect(*a)
+    f.rect(cx-RECT,cy-RECT,cx+RECT,cy+RECT,rand(0xffffff))
   end
 end
