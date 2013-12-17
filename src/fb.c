@@ -273,7 +273,7 @@ mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self)
   mrb_get_args(mrb,"ffff",&v[0],&v[1],&v[2],&v[3]);
   
   int unit=open(strcat(getenv("HOME"),CALIBDATA_FILE),O_WRONLY|O_TRUNC|O_CREAT,0600);
-  fprintf(stderr,"%s opened to unit %d\n",CALIBDATA_FILE,unit);
+  fprintf(stderr,"%s opened to unit %d (%s)\n",CALIBDATA_FILE,unit,strerror(errno));
   
   write(unit,v,sizeof(mrb_float)*4);
   close(unit);
