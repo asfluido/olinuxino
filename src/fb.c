@@ -285,7 +285,7 @@ mrb_value mrb_fb_calibdata(mrb_state *mrb,mrb_value self)
   mrb_ary_push(mrb,to_ret,mrb_float_value(mrb,s->calibdata[2]));
   mrb_ary_push(mrb,to_ret,mrb_float_value(mrb,s->calibdata[3]));  
 
-  returnm to_ret;
+  return to_ret;
 }
 
 static void fb_free(mrb_state *mrb, void *p)
