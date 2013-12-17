@@ -32,6 +32,7 @@ typedef struct mrb_fb
   struct fb_fix_screeninfo fix;
   struct fb_var_screeninfo var;
   __u32 *fb,**lines,screen_size;
+  char *calibdata_path;
   mrb_float *calibdata;
 } mrb_fb_stc;
 
@@ -105,7 +106,9 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
  * load calibdata if present
  */
 
-  i=open(strcat(getenv("HOME"),CALIBDATA_FILE),O_RDONLY);
+  s->calibdata_path=strdup(strcat(getenv("HOME"),CALIBDATA_FILE));
+  
+  i=open(s->calibdata_path,O_RDONLY);
   if(i>0)
   {
     s->calibdata=malloc(sizeof(mrb_float)*4);
@@ -272,10 +275,9 @@ mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self)
   
   mrb_get_args(mrb,"ffff",&v[0],&v[1],&v[2],&v[3]);
   
-  char *path=strcat(getenv("HOME"),CALIBDATA_FILE);
-  int unit=open(path,O_WRONLY|O_TRUNC|O_CREAT,0600);
+  int unit=open(s->calibdata_path,O_WRONLY|O_TRUNC|O_CREAT,0600);
   
-  fprintf(stderr,"%s opened to unit %d (%s)\n",path,unit,strerror(errno));
+  fprintf(stderr,"%s opened to unit %d (%s)\n",s->calibdata_path,unit,strerror(errno));
   
   write(unit,v,sizeof(mrb_float)*4);
   close(unit);
