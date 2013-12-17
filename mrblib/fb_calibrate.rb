@@ -1,5 +1,5 @@
 class Fb
-  MARG=10
+  MARG=30
   CROSS_ARM=20
   CROSS_THICK=3
   CROSS_COL=0xff4036
