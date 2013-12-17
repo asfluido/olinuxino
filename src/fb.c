@@ -149,7 +149,7 @@ mrb_value mrb_fb_fill(mrb_state *mrb,mrb_value self)
   for(ptr=s->fb,i=s->screen_size;i>0;i--)
     *ptr++=col;
   
-  return to_ret;
+  return self;
 }
 
 mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self)
