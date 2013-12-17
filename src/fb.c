@@ -20,7 +20,7 @@
 #define ISBIT(data,pos) ((data[(pos>>3)]>>(pos&7))&1)
 #define POLL_TIMEOUT 250
 
-#define CALIBDATA_FILE "~/.fb_calibdata"
+#define CALIBDATA_FILE "/.fb_calibdata"
 
 typedef struct mrb_fb
 {
@@ -247,8 +247,10 @@ mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self)
   mrb_float v[4];
   
   mrb_get_args(mrb,"ffff",&v[0],&v[1],&v[2],&v[3]);
-
-  int unit=open(CALIBDATA_FILE,O_WRONLY|O_TRUNC|O_CREAT,0600);
+  
+  int unit=open(strcat(getenv("HOME"),CALIBDATA_FILE),O_WRONLY|O_TRUNC|O_CREAT,0600);
+  fprintf(stderr,"%s opened to unit %d\n",CALIBDATA_FILE,unit);
+  
   write(unit,v,sizeof(mrb_float)*4);
   close(unit);
 
