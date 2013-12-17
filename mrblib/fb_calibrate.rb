@@ -17,7 +17,7 @@ class Fb
     ypchigh=(res[2][1]+res[3][1])/2.0
     yperdig=(sy-MARG*2)/(ypchigh-ypclow)
     
-    p [xperdig,yperdig,RES[0][0]*xperdig,RES[1][0]*yperdig]
+    p [xperdig,yperdig,res[0][0]*xperdig,res[1][0]*yperdig]
   end
 
   def getfinger(x,y)
