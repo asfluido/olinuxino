@@ -13,11 +13,14 @@ class Fb
     xpclow=(res[0][0]+res[3][0])/2.0
     xpchigh=(res[1][0]+res[2][0])/2.0
     xperdig=(sx-MARG*2)/(xpchigh-xpclow)
+    xzero=res[0][0]-MARG/xperdig
+    
     ypclow=(res[0][1]+res[1][1])/2.0
     ypchigh=(res[2][1]+res[3][1])/2.0
     yperdig=(sy-MARG*2)/(ypchigh-ypclow)
+    yzero=res[0][1]-MARG/yperdig
     
-    p [res,xpclow,xpchigh,xperdig,ypclow,ypchigh,yperdig,res[0][0]*xperdig,res[0][1]*yperdig]
+    p [res,xpclow,xpchigh,xperdig,ypclow,ypchigh,yperdig,(res[0][0]-xzero)*xperdig,(res[0][1]-yzero)*yperdig]
   end
 
   def getfinger(x,y)
