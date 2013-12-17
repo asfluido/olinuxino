@@ -279,7 +279,7 @@ mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self)
   close(unit);
 
   s->calibdata=realloc(s->calibdata,sizeof(mrb_float)*4);
-  memcpy(s->calibdata,v);
+  memcpy(s->calibdata,v,sizeof(mrb_float)*4);
 
   return self;
 }    
