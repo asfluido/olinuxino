@@ -9,7 +9,7 @@ class Fb
 
     [[MARG,MARG],[sx-MARG,MARG],[sx-MARG,sy-MARG],[MARG,sy-MARG]].each do |x,y|
       fx,fy=getfinger(x,y)
-      loggo("#{[x,x]} -> #{[fx,fy]}")
+      loggo("#{[x,y]} -> #{[fx,fy]}")
     end
 
   end
