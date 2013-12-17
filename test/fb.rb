@@ -1,6 +1,6 @@
 #!/usr/src/mruby/bin/mruby
 
-RECT=25
+RECT=35
 
 f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 
@@ -22,14 +22,10 @@ loop do
     f.line(*vs)
   end
   
-  nt,px,py=f.status
+  nt,px,py=f.status(true)
   #  unless(nt==touch)
   #    touch=nt
   #    loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
   #  end
-  if(nt)
-    cx=((px-cd[0])*cd[1]).to_i
-    cy=((py-cd[2])*cd[3]).to_i
-    f.rect(cx-RECT,cy-RECT,cx+RECT,cy+RECT,rand(0xffffff))
-  end
+  f.rect(px-RECT,py-RECT,px+RECT,py+RECT,rand(0xffffff)) if(nt)
 end
