@@ -243,7 +243,7 @@ mrb_value mrb_fb_rect(mrb_state *mrb,mrb_value self)
 
 mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self)
 {
-  mrb_fb_stc *s=DATA_PTR(self);
+//  mrb_fb_stc *s=DATA_PTR(self);
   mrb_float v[4];
   
   mrb_get_args(mrb,"ffff",&v[0],&v[1],&v[2],&v[3]);
