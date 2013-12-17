@@ -29,7 +29,7 @@ typedef struct mrb_fb
   __s32 p_x,p_y;
   struct fb_fix_screeninfo fix;
   struct fb_var_screeninfo var;
-  __u32 *fb,**lines;
+  __u32 *fb,**lines,screensize;
 } mrb_fb_stc;
 
 static void fb_free(mrb_state *mrb, void *p);
@@ -85,6 +85,8 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   if(s->var.bits_per_pixel!=32)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: only support 32bpp (found %S)\n",v1,mrb_fixnum_value(s->var.bits_per_pixel));
 
+  s->screen_size=s->var.xres*s->var.yres;
+  
   s->fb=mmap(NULL,s->fix.smem_len,PROT_READ|PROT_WRITE,MAP_FILE|MAP_SHARED,s->fbunit,0);
   if(s->fb==(__u32 *)-1)
     mrb_raisef(mrb,E_TYPE_ERROR,"%S: error in fb mmap (%S)\n",v1,mrb_str_new_cstr(mrb,strerror(errno)));
@@ -94,6 +96,14 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
     s->lines[i]=s->fb+s->var.xres_virtual*i;
   
   fprintf(stderr,"FB: [%s] (%dx%d, %d bpp)\n",s->fix.id,s->var.xres,s->var.yres,s->var.bits_per_pixel);
+
+/*
+ * Disable cursor blink
+ */
+
+  i=open("/sys/class/graphics/fbcon/cursor_blink",O_WRONLY);
+  write(i,"0",1);
+  close(i)
   
   s->exit_thread=0;
   int ret=pthread_create(&s->ts_thr,NULL,ts,s);
@@ -125,6 +135,20 @@ mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
   mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->p_x));
   mrb_ary_push(mrb,to_ret,mrb_fixnum_value(s->p_y));
 
+  return to_ret;
+}
+
+mrb_value mrb_fb_fill(mrb_state *mrb,mrb_value self)
+{
+  mrb_fb_stc *s=DATA_PTR(self);
+  __u32 col,*ptr;
+  int i;
+
+  mrb_get_args(mrb,"i",&col);
+
+  for(ptr=s->fb,i=s->screen_size;i>0;i--)
+    *ptr++=col;
+  
   return to_ret;
 }
 
@@ -226,6 +250,14 @@ static void fb_free(mrb_state *mrb, void *p)
 
   close(s->fbunit);
   close(s->tsunit);
+
+/*
+ * Enable cursor blink
+ */
+
+  int i=open("/sys/class/graphics/fbcon/cursor_blink",O_WRONLY);
+  write(i,"1",1);
+  close(i)
   
   mrb_free(mrb,p);
 }
