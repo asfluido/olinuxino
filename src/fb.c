@@ -105,6 +105,8 @@ mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
   i=open("/sys/class/graphics/fbcon/cursor_blink",O_WRONLY);
   write(i,"0",1);
   close(i);
+
+  fill(s,0);
   
   s->exit_thread=0;
   int ret=pthread_create(&s->ts_thr,NULL,ts,s);
@@ -244,11 +246,7 @@ static void fb_free(mrb_state *mrb, void *p)
   s->exit_thread=1;
   pthread_join(s->ts_thr,NULL);
 
-  munmap(s->fb,s->fix.smem_len);
-  free(s->lines);
-
-  close(s->fbunit);
-  close(s->tsunit);
+  fill(s,0);
 
 /*
  * Enable cursor blink
@@ -257,6 +255,12 @@ static void fb_free(mrb_state *mrb, void *p)
   int i=open("/sys/class/graphics/fbcon/cursor_blink",O_WRONLY);
   write(i,"1",1);
   close(i);
+
+  munmap(s->fb,s->fix.smem_len);
+  free(s->lines);
+
+  close(s->fbunit);
+  close(s->tsunit);
   
   mrb_free(mrb,p);
 }
