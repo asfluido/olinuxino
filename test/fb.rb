@@ -30,6 +30,8 @@ loop do
   if(nt)
     cx=(cd[0]+px*cd[1]).to_i
     cy=(cd[2]+py*cd[3]).to_i
-    f.rect(cx-RECT,cy-RECT,cx+RECT,cy+RECT,rand(0xffffff))
+    a=[cx-RECT,cy-RECT,cx+RECT,cy+RECT,rand(0xffffff)]
+    p a
+    f.rect(*a)
   end
 end
