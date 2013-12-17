@@ -224,6 +224,9 @@ mrb_value mrb_fb_rect(mrb_state *mrb,mrb_value self)
 
   mrb_get_args(mrb,"iiiii",&xf,&yf,&xt,&yt,&col);
 
+  if(xf==xt && yf==yt)
+    return self;  
+
   if(xf>xt)
   {
     i=xf;
