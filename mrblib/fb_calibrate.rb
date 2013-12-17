@@ -20,7 +20,7 @@ class Fb
     yperdig=(sy-MARG*2)/(ypchigh-ypclow)
     yzero=res[0][1]-MARG/yperdig
 
-    save_calibdata(xzero,xperdig,yzero,yperdig)
+    save_calibdata(xzero,xperdig,yzero,yperdig) 
   end
 
   def getfinger(x,y)
