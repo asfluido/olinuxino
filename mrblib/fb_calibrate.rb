@@ -31,7 +31,7 @@ class Fb
     px=nil
     py=nil
     loop do
-      t,px,py=status()
+      t,px,py=status(false)
       if(!click)
         click=true if(t)
         next
