@@ -2,6 +2,8 @@
 
 f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 
+f.calibrate
+
 sx,sy=f.size
 loggo("Ueppolo: #{sx}x#{sy}")
 touch=nil
