@@ -1,8 +1,14 @@
 #!/usr/src/mruby/bin/mruby
 
+RS=5
+
 f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 
-f.calibrate
+cd=f.calibdata
+unless(cd)
+  f.calibrate 
+  cd=f.calibdata
+end
 
 sx,sy=f.size
 loggo("Ueppolo: #{sx}x#{sy}")
@@ -17,8 +23,13 @@ loop do
   end
   
   nt,px,py=f.status
-  unless(nt==touch)
-    touch=nt
-    loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
+  #  unless(nt==touch)
+  #    touch=nt
+  #    loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
+  #  end
+  if(nt)
+    cx=(cd[0]+px*cd[1]).to_i
+    cy=(cd[2]+py*cd[3]).to_i
+    rect(cx-RECT,cy-RECT,cx-RECT,cy-RECT,rand(0xffffff))
   end
 end
