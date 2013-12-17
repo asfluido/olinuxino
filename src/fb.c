@@ -35,6 +35,7 @@ typedef struct mrb_fb
 static void fb_free(mrb_state *mrb, void *p);
 static struct mrb_data_type mrb_fb_type={"Fb",fb_free};
 static inline void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col);
+static inline void fill(mrb_fb_stc *s,__u32 col);
 static void *ts(void *arg);
 
 mrb_value mrb_fb_initialize(mrb_state *mrb,mrb_value self)
@@ -141,13 +142,11 @@ mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
 mrb_value mrb_fb_fill(mrb_state *mrb,mrb_value self)
 {
   mrb_fb_stc *s=DATA_PTR(self);
-  __u32 col,*ptr;
-  int i;
+  __u32 col;
 
   mrb_get_args(mrb,"i",&col);
 
-  for(ptr=s->fb,i=s->screen_size;i>0;i--)
-    *ptr++=col;
+  fill(s,col);
   
   return self;
 }
@@ -270,6 +269,15 @@ static inline void paint_pixel(mrb_fb_stc *s,int x,int y,__u32 col)
     return;
 
   s->lines[y][x]=col;  
+}
+
+static inline void fill(mrb_fb_stc *s,__u32 col)
+{
+  __u32 *ptr=s->fb;
+  int i;
+
+  for(i=s->screen_size;i>0;i--)
+    *ptr++=col;
 }
 
 static void *ts(void *arg)

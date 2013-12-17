@@ -1,9 +1,6 @@
 #!/usr/src/mruby/bin/mruby
 
 f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
-at_exit do
-  f.fill(0)
-end
 
 sx,sy=f.size
 loggo("Ueppolo: #{sx}x#{sy}")
