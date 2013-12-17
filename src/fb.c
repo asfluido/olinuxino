@@ -280,10 +280,10 @@ mrb_value mrb_fb_calibdata(mrb_state *mrb,mrb_value self)
     return mrb_false_value();  
     
   mrb_value to_ret=mrb_ary_new(mrb);
-  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[0]));
-  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[1]));
-  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[2]));
-  mrb_ary_push(mrb,to_ret,mrb_float_value(s->calibdata[3]));  
+  mrb_ary_push(mrb,to_ret,mrb_float_value(mrb,s->calibdata[0]));
+  mrb_ary_push(mrb,to_ret,mrb_float_value(mrb,s->calibdata[1]));
+  mrb_ary_push(mrb,to_ret,mrb_float_value(mrb,s->calibdata[2]));
+  mrb_ary_push(mrb,to_ret,mrb_float_value(mrb,s->calibdata[3]));  
 
   returnm to_ret;
 }
