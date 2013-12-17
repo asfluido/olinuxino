@@ -115,7 +115,7 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   mrb_define_method(mrb,c,"fill",mrb_fb_fill,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"line",mrb_fb_line,MRB_ARGS_REQ(5));
   mrb_define_method(mrb,c,"rect",mrb_fb_rect,MRB_ARGS_REQ(5));
-  mrb_define_method(mrb,c,"save_calibdata",mrb_fb_rect,MRB_ARGS_REQ(4));
+  mrb_define_method(mrb,c,"save_calibdata",mrb_fb_save_calibdata,MRB_ARGS_REQ(4));
 }
 
 void mrb_olinuxino_gem_final(mrb_state* mrb)
