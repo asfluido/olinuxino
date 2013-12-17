@@ -6,7 +6,7 @@ f=Fb::new('/dev/fb0','/dev/input/by-path/platform-sun4i-ts-event')
 
 cd=f.calibdata
 unless(cd)
-  f.calibrate 
+  f.perf_calibration
   cd=f.calibdata
 end
 

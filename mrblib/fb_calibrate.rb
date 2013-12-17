@@ -4,7 +4,7 @@ class Fb
   CROSS_THICK=3
   CROSS_COL=0xff4036
   
-  def calibrate
+  def perf_calibration
     sx,sy=size()
 
     res=[[MARG,MARG],[sx-MARG,MARG],[sx-MARG,sy-MARG],[MARG,sy-MARG]].map do |x,y|
