@@ -28,8 +28,8 @@ loop do
   #    loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
   #  end
   if(nt)
-    cx=(cd[0]+px*cd[1]).to_i
-    cy=(cd[2]+py*cd[3]).to_i
+    cx=((px-cd[0])*cd[1]).to_i
+    cy=((py-cd[2])*cd[3]).to_i
     a=[cx-RECT,cy-RECT,cx+RECT,cy+RECT,rand(0xffffff)]
     p a
     f.rect(*a)
