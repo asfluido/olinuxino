@@ -158,8 +158,8 @@ mrb_value mrb_fb_status(mrb_state *mrb,mrb_value self)
     return mrb_false_value();  
 
   mrb_ary_push(mrb,to_ret,mrb_bool_value(s->touching));
-  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(converted ? (int)(s->p_x-s->calibdata[0])*s->calibdata[1]) : s->p_x));
-  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(converted ? (int)(s->p_y-s->calibdata[2])*s->calibdata[3]) : s->p_y));
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(converted ? (int)((s->p_x-s->calibdata[0])*s->calibdata[1]) : s->p_x));
+  mrb_ary_push(mrb,to_ret,mrb_fixnum_value(converted ? (int)((s->p_y-s->calibdata[2])*s->calibdata[3]) : s->p_y));
 
   return to_ret;
 }
