@@ -11,8 +11,7 @@ unless(cd)
 end
 
 sx,sy=f.size
-loggo("Ueppolo: #{sx}x#{sy}")
-touch=nil
+
 loop do
   vs=[rand(sx),rand(sy),rand(sx),rand(sy),rand(0xffffff)]
 
@@ -23,9 +22,5 @@ loop do
   end
   
   nt,px,py=f.status(true)
-  #  unless(nt==touch)
-  #    touch=nt
-  #    loggo("#{touch ? 'CLICK' : 'release'} at #{px},#{py}")
-  #  end
   f.rect(px-RECT,py-RECT,px+RECT,py+RECT,rand(0xffffff)) if(nt)
 end
