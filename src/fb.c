@@ -249,10 +249,10 @@ mrb_value mrb_fb_rect(mrb_state *mrb,mrb_value self)
   if(yf>=s->var.yres)
     yf=s->var.yres-1;
 
-  for(y=yf;y<=yt;y++)
+  for(y=yf;y<yt;y++)
   {
     ptr=s->lines[y]+xf;
-    for(x=xf;x<=xt;x++)
+    for(x=xf;x<xt;x++)
       *ptr++=col;
   }
   
