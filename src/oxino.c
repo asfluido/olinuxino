@@ -11,6 +11,8 @@
 
 #include "oxino.h"
 
+extern mrb_value mrb_mainloop_initialize(mrb_state *mrb,mrb_value self);
+
 extern mrb_value mrb_spi_initialize(mrb_state *mrb,mrb_value self);
 
 extern mrb_value mrb_mrf89_initialize(mrb_state *mrb,mrb_value self);
@@ -81,7 +83,12 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   mrb_define_method(mrb,mrb->object_class,"loggo",mrb_loggo,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,mrb->object_class,"readline",mrb_readline,MRB_ARGS_NONE());
   
-  struct RClass *c=mrb_define_class(mrb,"Spi",mrb->object_class);
+  struct RClass *c=mrb_define_class(mrb,"Mainloop",mrb->object_class);
+  MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
+
+  mrb_define_method(mrb,c,"initialize",mrb_mainloop_initialize,MRB_ARGS_NONE());
+
+  c=mrb_define_class(mrb,"Spi",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
 
   mrb_define_method(mrb,c,"initialize",mrb_spi_initialize,MRB_ARGS_REQ(2));
