@@ -12,6 +12,7 @@
 #include "oxino.h"
 
 extern mrb_value mrb_mainloop_initialize(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_mainloop_add_unit(mrb_state *mrb,mrb_value self);
 
 extern mrb_value mrb_spi_initialize(mrb_state *mrb,mrb_value self);
 
@@ -36,6 +37,9 @@ extern mrb_value mrb_fb_line(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_fb_rect(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_fb_save_calibdata(mrb_state *mrb,mrb_value self);
 extern mrb_value mrb_fb_calibdata(mrb_state *mrb,mrb_value self);
+
+extern mrb_value mrb_osock_initialize(mrb_state *mrb,mrb_value self);
+extern mrb_value mrb_osock_unit(mrb_state *mrb,mrb_value self);
 
 static mrb_value mrb_msleep(mrb_state *mrb,mrb_value self)
 {
@@ -86,7 +90,8 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   struct RClass *c=mrb_define_class(mrb,"Mainloop",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
 
-  mrb_define_method(mrb,c,"initialize",mrb_mainloop_initialize,MRB_ARGS_NONE());
+  mrb_define_method(mrb,c,"initialize",mrb_mainloop_initialize,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,c,"add_unit",mrb_mainloop_add_unit,MRB_ARGS_REQ(3));
 
   c=mrb_define_class(mrb,"Spi",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
@@ -125,6 +130,12 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   mrb_define_method(mrb,c,"rect",mrb_fb_rect,MRB_ARGS_REQ(5));
   mrb_define_method(mrb,c,"save_calibdata",mrb_fb_save_calibdata,MRB_ARGS_REQ(4));
   mrb_define_method(mrb,c,"calibdata",mrb_fb_calibdata,MRB_ARGS_NONE());
+
+  c=mrb_define_class(mrb,"Osock",mrb->object_class);
+  MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
+
+  mrb_define_method(mrb,c,"initialize",mrb_osock_initialize,MRB_ARGS_REQ(1));
+  mrb_define_method(mrb,c,"unit",mrb_osock_unit,MRB_ARGS_NONE());
 }
 
 void mrb_olinuxino_gem_final(mrb_state* mrb)
