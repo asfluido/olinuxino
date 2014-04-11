@@ -28,7 +28,7 @@ class Led
   end
 end
 
-l=Led::new
+l=Led::from_pin
 
 status=false
 l.off
