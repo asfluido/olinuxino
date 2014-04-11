@@ -6,7 +6,7 @@ class Led
     base=nil
     Dir::foreach(GPIO_BASE) do |en|
       r=/gpio(.*)_(.*)/.match(en)
-      if(r && r[3]==LED_PIN)
+      if(r && r[2]==LED_PIN)
         base=GPIO_BASE+en+'/'
         break
       end
