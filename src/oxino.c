@@ -115,7 +115,7 @@ void mrb_olinuxino_gem_init(mrb_state* mrb)
   c=mrb_define_class(mrb,"Led",mrb->object_class);
   MRB_SET_INSTANCE_TT(c,MRB_TT_DATA);
 
-  mrb_define_method(mrb,c,"initialize",mrb_led_initialize,MRB_ARGS_NONE());
+  mrb_define_method(mrb,c,"initialize",mrb_led_initialize,MRB_ARGS_REQ(1));
   mrb_define_method(mrb,c,"on",mrb_led_on,MRB_ARGS_NONE());
   mrb_define_method(mrb,c,"off",mrb_led_off,MRB_ARGS_NONE());
 

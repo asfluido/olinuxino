@@ -11,8 +11,6 @@
 
 #include "oxino.h"
 
-#define LED_PIN "pg9"
-
 typedef struct mrb_led
 {
   int unit;
@@ -24,12 +22,13 @@ static struct mrb_data_type mrb_led_type={"Led",led_free};
 mrb_value mrb_led_initialize(mrb_state *mrb,mrb_value self)
 {
   mrb_led_stc *s=(mrb_led_stc *)mrb_malloc(mrb,sizeof(mrb_led_stc));
-  char bfr[256];
-
-  sprintf(bfr,"/sys/devices/virtual/misc/sun4i-gpio/pin/%s",LED_PIN);
-  s->unit=open(bfr,O_WRONLY|O_SYNC);
+  mrb_value v;
+  
+  mrb_get_args(mrb,"S",&v);
+  
+  s->unit=open(RSTRING_PTR(v),O_WRONLY|O_SYNC);
   if(s->unit<0)
-    mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",mrb_str_new_cstr(mrb,bfr),mrb_str_new_cstr(mrb,strerror(errno)));
+    mrb_raisef(mrb,E_TYPE_ERROR,"Error opening %S (%S)\n",v,mrb_str_new_cstr(mrb,strerror(errno)));
   
   DATA_TYPE(self)=&mrb_led_type;
   DATA_PTR(self)=s;
