@@ -13,7 +13,8 @@ class Led
     end
 
     raise "Could not find gpio pin #{LED_PIN}" unless(base)
-    
+
+    STDERR.puts("Direction: #{base+'direction'}")
     File::open(base+'direction','wb') do |f|
       f.puts('out')
     end
